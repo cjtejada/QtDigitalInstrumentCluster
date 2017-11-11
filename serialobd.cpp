@@ -2,6 +2,8 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
+
+    ////TO USE WITH CAR DELETE THIS LINE AND THE LOOP AT THE BOTTOM
     ParseAndReportClusterData("");
 
     //////////////////////////////////////////////////////////
@@ -224,8 +226,9 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
 
     //qDebug() << TroubleCode;
 
+    ////DELETE THIS WHILE LOOP IF USING WITH CAR THROUGH OBD AND
     while(true){
-
+        ///DELETE THIS AS WELL
         RPM = (RPM + 1) * 4;
 
         ArrayRPM[GaugeCount] = RPM;

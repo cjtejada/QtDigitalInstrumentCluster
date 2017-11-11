@@ -7,6 +7,7 @@ Window {
     width: 1920
     height: 810
     onBeforeRendering: Work.start();
+    //property int fuelpercentage: 0
 
     Rectangle{
         anchors.fill: parent
@@ -34,6 +35,40 @@ Window {
                 width: 120
                 anchors.centerIn: rpm
                 transform: Rotation { origin.x: 60; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: needle.angle }
+            }
+
+            Rectangle{
+                id: fuelrect
+                height: 130
+                width: 87
+                anchors.centerIn: parent
+                color: "transparent"
+                anchors.verticalCenterOffset: -60
+                anchors.horizontalCenterOffset: 20.3
+                radius: 10
+
+                Rectangle{
+                    id: fuelprogressbar
+                    radius: 10
+                    anchors.bottom: parent.bottom
+                    color: "lightgreen"
+                    width: parent.width
+                    height: parent.height * (fuelpercent * .01)
+
+                }
+
+                Text {
+                    id: fuelpercent
+                    anchors.centerIn: fuelrect
+                    anchors.verticalCenterOffset: 15
+                    font.family: "Arial"
+                    text: "--%"
+                    font.pointSize: 20
+                    color: "#0059ff"
+                    font.bold: true
+
+                }
+
             }
 
             Image{
@@ -69,15 +104,15 @@ Window {
                 anchors.topMargin: 0
                 width: 540
 
-                        Text{
-                            id: liveMPH
-                            anchors.centerIn: parent
-                            font.pointSize: 80
-                            color: "#0059ff"
-                            text: "0"
-                            font.family: "Calibri"
-                            anchors.verticalCenterOffset: -10
-                        }
+                Text{
+                    id: liveMPH
+                    anchors.centerIn: parent
+                    font.pointSize: 80
+                    color: "#0059ff"
+                    text: "0"
+                    font.family: "Calibri"
+                    anchors.verticalCenterOffset: -10
+                }
             }
 
         }
@@ -87,9 +122,9 @@ Window {
         target: Work
         onObdRPM: needle.angle = rpm * 0.045 + 180
         onObdMPH: liveMPH.text = speed - 1
-//        onObdFuelStatus: liveFuel.text = fuel + "% fuel"
-//        onObdCoolantTemp: liveCoolantTemp.text = coolantTemp + "c"
-//        onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
+        onObdFuelStatus: fuelpercent.text = fuel + "%"
+        //        onObdCoolantTemp: liveCoolantTemp.text = coolantTemp + "c"
+        //        onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
     }
 
