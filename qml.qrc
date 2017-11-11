@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>gauges/MPHGauge.png</file>
+        <file>gauges/needle.png</file>
+        <file>gauges/RPMGauge.png</file>
+    </qresource>
+</RCC>
