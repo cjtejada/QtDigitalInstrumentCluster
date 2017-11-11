@@ -3,7 +3,8 @@
 void SerialOBD::ConnectToSerialPort()
 {
 
-    ////TO USE WITH CAR DELETE THIS LINE AND THE LOOP AT THE BOTTOM
+    ////TO USE WITH CAR DELETE THIS LINE AND THE
+    /// LOOP AT THE BOTTOM OF THE PAGE
     ParseAndReportClusterData("");
 
     //////////////////////////////////////////////////////////
