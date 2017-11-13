@@ -7,7 +7,7 @@ Window {
     width: 1920
     height: 810
     onBeforeRendering: Work.start();
-    //property int fuelpercentage: 0
+
 
     Rectangle{
         anchors.fill: parent
@@ -26,7 +26,7 @@ Window {
             transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: 15}
 
             Image {
-                id: needle
+                id: rpmneedle
                 property double angle: 180
                 source: "qrc:/gauges/needle.png"
                 height: 120
@@ -34,7 +34,7 @@ Window {
                 anchors.horizontalCenterOffset: -3
                 width: 120
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 60; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: needle.angle }
+                transform: Rotation { origin.x: 60; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle }
             }
 
             Rectangle{
@@ -49,11 +49,12 @@ Window {
 
                 Rectangle{
                     id: fuelprogressbar
+                    property int fuelpercentage: 0
                     radius: 10
                     anchors.bottom: parent.bottom
                     color: "lightgreen"
                     width: parent.width
-                    height: parent.height * (fuelpercent * .01)
+                    height: parent.height * (fuelprogressbar.fuelpercentage * .01)
 
                 }
 
@@ -91,7 +92,21 @@ Window {
             width: 700
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
+            transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
+
+
+            Image {
+                id: mphneedle
+                property double angle: 180
+                x: 265
+                y: 38
+                source: "qrc:/gauges/needle.png"
+                height: 120
+                width: 120
+                transform: Rotation { origin.x: 60; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle}
+            }
+
+
             Image{
                 id: mph
                 x: 96
@@ -99,10 +114,10 @@ Window {
                 source: "qrc:/gauges/MPHGauge.png"
                 anchors.top: parent.top
                 anchors.right: parent.right
-                height: 633
-                anchors.rightMargin: 64
+                height: 750
+                anchors.rightMargin: 0
                 anchors.topMargin: 0
-                width: 540
+                width: 750
 
                 Text{
                     id: liveMPH
@@ -120,11 +135,11 @@ Window {
     }
     Connections{
         target: Work
-        onObdRPM: needle.angle = rpm * 0.045 + 180
+        onObdRPM: rpmneedle.angle = rpm * 0.045 + 180
         onObdMPH: liveMPH.text = speed - 1
-        onObdFuelStatus: fuelpercent.text = fuel + "%"
-        //        onObdCoolantTemp: liveCoolantTemp.text = coolantTemp + "c"
-        //        onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
+        onObdFuelStatus: fuelprogressbar.fuelpercentage = fuel
+        //onObdCoolantTemp: liveCoolantTemp.text = coolantTemp + "c"
+        //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
     }
 

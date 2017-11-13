@@ -40,8 +40,8 @@ private:
     float DifRPM = 0;
     int DifMPH = 0;
 
-    int ArrayRPM[2] = {0};
-    int ArrayMPH[2] = {0};
+    int ArrayRPM[2];
+    int ArrayMPH[2];
 
 };
 

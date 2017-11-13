@@ -34,8 +34,8 @@ void SerialOBD::ConnectToSerialPort()
             //Verify OBD Connection
             if(data.isEmpty())
                 m_serial.write("ATE1\r");
-            m_serial.waitForBytesWritten();
-            m_serial.waitForReadyRead();
+            //            m_serial.waitForBytesWritten();
+            //            m_serial.waitForReadyRead();
             QThread::msleep(50);
             data = m_serial.readAll();
             qDebug() << data;
@@ -69,8 +69,8 @@ void SerialOBD::RequestClusterData()
                        PID.getThrottlePosition() + "\r");
     }
 
-    m_serial.waitForBytesWritten();
-    m_serial.waitForReadyRead();
+    //    m_serial.waitForBytesWritten();
+    //    m_serial.waitForReadyRead();
     QThread::msleep(100);
     data = m_serial.readAll();
 
@@ -227,41 +227,36 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
 
     //qDebug() << TroubleCode;
 
-    ////DELETE THIS WHILE LOOP IF USING WITH CAR THROUGH OBD AND
-    while(true){
-        ///DELETE THIS AS WELL
-        RPM = (RPM + 1) * 4;
+    ArrayRPM[GaugeCount] = RPM;
+    ArrayMPH[GaugeCount] = Speed;
 
-        ArrayRPM[GaugeCount] = RPM;
-        ArrayMPH[GaugeCount] = Speed;
+    GaugeCount = 1;
 
-        GaugeCount = 1;
+    if(ArrayRPM[0] != 0 && ArrayRPM[1] != 0)
+        DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
 
-        if(ArrayRPM[0] != 0 && ArrayRPM[1] != 0)
-            DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
-
-        if(RPM != 0){
-            int newrpm = 0;
-            float i = DifRPM / 20;
-            newrpm = ArrayRPM[0] + DifRPM;
-            while(i != DifRPM){
-                emit obdRPM(ArrayRPM[0] + i);
-                i = i + DifRPM / 20;
-                QThread::msleep(100 / 20);
-            }
-            ArrayRPM[0] = newrpm;
+    if(RPM != 0){
+        int newrpm = 0;
+        float i = DifRPM / 20;
+        newrpm = ArrayRPM[0] + DifRPM;
+        while(i != DifRPM){
+            emit obdRPM(ArrayRPM[0] + i);
+            i = i + DifRPM / 20;
+            QThread::msleep(100 / 20);
         }
-
-        if(Speed > 0)
-            emit obdMPH(Speed);
-        if(FuelStatus > 0 )
-            emit obdFuelStatus(FuelStatus);
-        if(EngineCoolantTemp > 0)
-            emit obdCoolantTemp(EngineCoolantTemp);
-        if(ThrottlePosition > 0)
-            emit obdThrottlePosition(ThrottlePosition);
-        if(TroubleCode != "0")
-            emit obdTroubleCode(TroubleCode);
+        ArrayRPM[0] = newrpm;
     }
+
+    if(Speed > 0)
+        emit obdMPH(Speed);
+    if(FuelStatus > 0 )
+        emit obdFuelStatus(FuelStatus);
+    if(EngineCoolantTemp > 0)
+        emit obdCoolantTemp(EngineCoolantTemp);
+    if(ThrottlePosition > 0)
+        emit obdThrottlePosition(ThrottlePosition);
+    if(TroubleCode != "0")
+        emit obdTroubleCode(TroubleCode);
+
 
 }
