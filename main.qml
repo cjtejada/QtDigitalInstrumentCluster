@@ -27,14 +27,14 @@ Window {
 
             Image {
                 id: rpmneedle
-                property double angle: 180
+                property double angle: 179.5
                 source: "qrc:/gauges/needle.png"
                 height: 120
                 anchors.verticalCenterOffset: -275
                 anchors.horizontalCenterOffset: -3
-                width: 120
+                width: 100
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 60; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle }
+                transform: Rotation { origin.x: 50; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle }
             }
 
             Rectangle{
@@ -70,11 +70,11 @@ Window {
 
                 }
 
+
             }
 
             Image{
                 id: rpm
-                y: 0
                 source: "qrc:/gauges/RPMGauge.png"
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
@@ -82,6 +82,19 @@ Window {
                 anchors.bottomMargin: -50
                 anchors.leftMargin: 0
                 width: 750
+
+
+                Image{
+                    id: tempneedle
+                    property int angle: 270
+                    height: 100
+                    width: 100
+                    source: "qrc:/gauges/tempneedle.png"
+                    anchors.centerIn: parent
+                    anchors.horizontalCenterOffset: -4
+                    transform: Rotation { origin.x: 50; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle }
+                }
+
             }
 
         }
@@ -97,13 +110,13 @@ Window {
 
             Image {
                 id: mphneedle
-                property double angle: 180
+                property double angle: 178.3
                 x: 265
                 y: 38
                 source: "qrc:/gauges/needle.png"
                 height: 120
-                width: 120
-                transform: Rotation { origin.x: 60; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle}
+                width: 100
+                transform: Rotation { origin.x: 50; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: 178.3}
             }
 
 
@@ -135,10 +148,10 @@ Window {
     }
     Connections{
         target: Work
-        onObdRPM: rpmneedle.angle = rpm * 0.045 + 180
+        onObdRPM: rpmneedle.angle = rpm * 0.045 + 179.5
         onObdMPH: liveMPH.text = speed - 1
         onObdFuelStatus: fuelprogressbar.fuelpercentage = fuel
-        //onObdCoolantTemp: liveCoolantTemp.text = coolantTemp + "c"
+        onObdCoolantTemp: tempneedle.angle = coolantTemp * 2.25 + 270
         //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
     }

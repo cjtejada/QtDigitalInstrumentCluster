@@ -4,5 +4,6 @@
         <file>gauges/MPHGauge.png</file>
         <file>gauges/needle.png</file>
         <file>gauges/RPMGauge.png</file>
+        <file>gauges/tempneedle.png</file>
     </qresource>
 </RCC>
