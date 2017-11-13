@@ -34,8 +34,8 @@ void SerialOBD::ConnectToSerialPort()
             //Verify OBD Connection
             if(data.isEmpty())
                 m_serial.write("ATE1\r");
-            //            m_serial.waitForBytesWritten();
-            //            m_serial.waitForReadyRead();
+            m_serial.waitForBytesWritten();
+            m_serial.waitForReadyRead();
             QThread::msleep(50);
             data = m_serial.readAll();
             qDebug() << data;
@@ -69,8 +69,8 @@ void SerialOBD::RequestClusterData()
                        PID.getThrottlePosition() + "\r");
     }
 
-    //    m_serial.waitForBytesWritten();
-    //    m_serial.waitForReadyRead();
+    m_serial.waitForBytesWritten();
+    m_serial.waitForReadyRead();
     QThread::msleep(100);
     data = m_serial.readAll();
 
