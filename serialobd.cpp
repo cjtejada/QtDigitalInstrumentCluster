@@ -2,11 +2,6 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
-
-    ////TO USE WITH CAR DELETE THIS LINE AND THE
-    /// LOOP AT THE BOTTOM OF THE PAGE
-    //ParseAndReportClusterData("");
-
     //////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////
     QSerialPortInfo serialInfo;
@@ -226,10 +221,6 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         TroubleCode = "Network Code: U" + sTroubleCode;
 
     //qDebug() << TroubleCode;
-
-    ArrayRPM[GaugeCount] = RPM;
-    ArrayMPH[GaugeCount] = Speed;
-
     ArrayRPM[GaugeCount] = RPM;
     ArrayMPH[GaugeCount] = Speed;
 
@@ -237,6 +228,9 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         GaugeCount = 1;
 
     if(ArrayRPM[0] != 0 && ArrayRPM[1] > 100)
+        DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
+
+    if(ArrayMPH[1] > 0)
         DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
 
     if(RPM != 0){
@@ -252,14 +246,23 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
             QThread::msleep(0.1);
         }
         ArrayRPM[0] = newrpm;
-
-        if(ArrayRPM[0] < 100)
-            qDebug() << DifRPM;
-
     }
 
-    if(Speed > 0)
-        emit obdMPH(Speed);
+    if(Speed != 0){
+        int r = 0;
+        int newmph = 0;
+        int i = DifMPH / 50;
+        newmph = ArrayMPH[0] + DifMPH;
+        while(r < 50){
+            if(ArrayMPH[0] + i > 0)
+                emit obdMPH(ArrayMPH[0] + i);
+            i = i + DifMPH / 50;
+            r++;
+            QThread::msleep(0.1);
+        }
+        ArrayMPH[0] = newmph;
+    }
+
     if(FuelStatus > 0 )
         emit obdFuelStatus(FuelStatus);
     if(EngineCoolantTemp > 0)

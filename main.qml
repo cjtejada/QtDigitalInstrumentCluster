@@ -105,14 +105,14 @@ Window {
             width: 700
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
+            //transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
 
 
             Image {
                 id: mphneedle
                 property double angle: 175.5
-                x: 265
-                y: 38
+                x: 290
+                y: 45
                 source: "qrc:/gauges/needle.png"
                 height: 120
                 width: 70
@@ -149,8 +149,8 @@ Window {
     Connections{
         target: Work
         onObdRPM: rpmneedle.angle = rpm * 0.045 + 179.5
-        onObdMPH: liveMPH.text = speed - 1
-        onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel + "%"}
+        onObdMPH: {liveMPH.text = speed - 1; mphneedle.angle = (speed - 1) * 2.25 + 180}
+        onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
         onObdCoolantTemp: tempneedle.angle = coolantTemp * 2.25 + 270
         //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
