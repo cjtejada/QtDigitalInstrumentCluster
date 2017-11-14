@@ -37,7 +37,7 @@ private:
 
     int GaugeCount = 0;
 
-    float DifRPM = 0;
+    int DifRPM = 0;
     int DifMPH = 0;
 
     int ArrayRPM[2] = {0};
