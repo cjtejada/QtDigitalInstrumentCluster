@@ -227,13 +227,8 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
 
     //qDebug() << TroubleCode;
 
-    ////DELETE THIS WHILE LOOP IF USING WITH CAR THROUGH OBD AND
-    while(true){
-        ///DELETE THIS AS WELL
-        RPM = (RPM + 1) * 4;
-
-        ArrayRPM[GaugeCount] = RPM;
-        ArrayMPH[GaugeCount] = Speed;
+    ArrayRPM[GaugeCount] = RPM;
+    ArrayMPH[GaugeCount] = Speed;
 
     ArrayRPM[GaugeCount] = RPM;
     ArrayMPH[GaugeCount] = Speed;
@@ -260,6 +255,18 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
 
         if(ArrayRPM[0] < 100)
             qDebug() << DifRPM;
+
     }
+
+    if(Speed > 0)
+        emit obdMPH(Speed);
+    if(FuelStatus > 0 )
+        emit obdFuelStatus(FuelStatus);
+    if(EngineCoolantTemp > 0)
+        emit obdCoolantTemp(EngineCoolantTemp);
+    if(ThrottlePosition > 0)
+        emit obdThrottlePosition(ThrottlePosition);
+    if(TroubleCode != "0")
+        emit obdTroubleCode(TroubleCode);
 
 }
