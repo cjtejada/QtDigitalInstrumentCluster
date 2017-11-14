@@ -105,12 +105,12 @@ Window {
             width: 700
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            //transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
+            transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
 
 
             Image {
                 id: mphneedle
-                property double angle: 175.5
+                property double angle: 180
                 x: 290
                 y: 45
                 source: "qrc:/gauges/needle.png"

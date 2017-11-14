@@ -2,6 +2,8 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
+    ParseAndReportClusterData("");
+
     //////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////
     QSerialPortInfo serialInfo;
@@ -220,6 +222,8 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
         TroubleCode = "Network Code: U" + sTroubleCode;
 
+    //Speed = 80;
+
     //qDebug() << TroubleCode;
     ArrayRPM[GaugeCount] = RPM;
     ArrayMPH[GaugeCount] = Speed;
@@ -227,13 +231,13 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(ArrayRPM[0] != 0)
         GaugeCount = 1;
 
-    if(ArrayRPM[0] != 0 && ArrayRPM[1] > 100)
+    if(ArrayRPM[0] > 400 && ArrayRPM[1] > 400)
         DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
 
-    if(ArrayMPH[1] > 0)
-        DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
+//    if(true)
+//        DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
 
-    if(RPM != 0){
+    if(ArrayRPM[0] > 400 && ArrayRPM[1] > 400){
         int r = 0;
         int newrpm = 0;
         int i = DifRPM / 50;
@@ -248,20 +252,20 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         ArrayRPM[0] = newrpm;
     }
 
-    if(Speed != 0){
-        int r = 0;
-        int newmph = 0;
-        int i = DifMPH / 50;
-        newmph = ArrayMPH[0] + DifMPH;
-        while(r < 50){
-            if(ArrayMPH[0] + i > 0)
-                emit obdMPH(ArrayMPH[0] + i);
-            i = i + DifMPH / 50;
-            r++;
-            QThread::msleep(0.1);
-        }
-        ArrayMPH[0] = newmph;
-    }
+//    if(true){
+//        int r = 0;
+//        int newmph = 0;
+//        int i = DifMPH / 50;
+//        newmph = ArrayMPH[0] + DifMPH;
+//        while(r < 50){
+//            if(ArrayMPH[0] + i > 0)
+//                emit obdMPH(ArrayMPH[0] + i);
+//            i = i + DifMPH / 50;
+//            r++;
+//            QThread::msleep(0.1);
+//        }
+//        ArrayMPH[0] = newmph;
+//    }
 
     if(FuelStatus > 0 )
         emit obdFuelStatus(FuelStatus);
