@@ -7,7 +7,7 @@ Window {
     width: 1920
     height: 810
     onBeforeRendering: Work.start();
-    //property int fuelpercentage: 0
+
 
     Rectangle{
         anchors.fill: parent
@@ -26,15 +26,15 @@ Window {
             transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: 15}
 
             Image {
-                id: needle
-                property double angle: 180
+                id: rpmneedle
+                property double angle: 179.5
                 source: "qrc:/gauges/needle.png"
                 height: 120
                 anchors.verticalCenterOffset: -275
                 anchors.horizontalCenterOffset: -3
-                width: 120
+                width: 100
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 60; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: needle.angle }
+                transform: Rotation { origin.x: 50; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle }
             }
 
             Rectangle{
@@ -49,11 +49,12 @@ Window {
 
                 Rectangle{
                     id: fuelprogressbar
+                    property int fuelpercentage: 0
                     radius: 10
                     anchors.bottom: parent.bottom
                     color: "lightgreen"
                     width: parent.width
-                    height: parent.height * (fuelpercent * .01)
+                    height: parent.height * (fuelprogressbar.fuelpercentage * .01)
 
                 }
 
@@ -69,11 +70,11 @@ Window {
 
                 }
 
+
             }
 
             Image{
                 id: rpm
-                y: 0
                 source: "qrc:/gauges/RPMGauge.png"
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
@@ -81,6 +82,19 @@ Window {
                 anchors.bottomMargin: -50
                 anchors.leftMargin: 0
                 width: 750
+
+
+                Image{
+                    id: tempneedle
+                    property int angle: 270
+                    height: 100
+                    width: 100
+                    source: "qrc:/gauges/tempneedle.png"
+                    anchors.centerIn: parent
+                    anchors.horizontalCenterOffset: -4
+                    transform: Rotation { origin.x: 50; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle }
+                }
+
             }
 
         }
@@ -91,7 +105,21 @@ Window {
             width: 700
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
+            transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
+
+
+            Image {
+                id: mphneedle
+                property double angle: 178.3
+                x: 265
+                y: 38
+                source: "qrc:/gauges/needle.png"
+                height: 120
+                width: 100
+                transform: Rotation { origin.x: 50; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: 178.3}
+            }
+
+
             Image{
                 id: mph
                 x: 96
@@ -99,10 +127,10 @@ Window {
                 source: "qrc:/gauges/MPHGauge.png"
                 anchors.top: parent.top
                 anchors.right: parent.right
-                height: 633
-                anchors.rightMargin: 64
+                height: 750
+                anchors.rightMargin: 0
                 anchors.topMargin: 0
-                width: 540
+                width: 750
 
                 Text{
                     id: liveMPH
@@ -120,11 +148,11 @@ Window {
     }
     Connections{
         target: Work
-        onObdRPM: needle.angle = rpm * 0.045 + 180
+        onObdRPM: rpmneedle.angle = rpm * 0.045 + 179.5
         onObdMPH: liveMPH.text = speed - 1
-        onObdFuelStatus: fuelpercent.text = fuel + "%"
-        //        onObdCoolantTemp: liveCoolantTemp.text = coolantTemp + "c"
-        //        onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
+        onObdFuelStatus: fuelprogressbar.fuelpercentage = fuel
+        onObdCoolantTemp: tempneedle.angle = coolantTemp * 2.25 + 270
+        //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
     }
 
