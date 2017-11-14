@@ -234,7 +234,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(ArrayRPM[0] > 100 && ArrayRPM[1] > 100)
         DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
 
-    if(ArrayRPM + DifRPM > ArrayRPM * 2){
+    if(ArrayRPM[0] + DifRPM > ArrayRPM[0] / 2){
         int r = 0;
         int newrpm = 0;
         int i = DifRPM / 50;
