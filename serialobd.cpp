@@ -248,8 +248,10 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         ArrayRPM[0] = newrpm;
     }
 
-    if(Speed > 0 )
+    if(Speed > 0 ){
+        QThread::msleep(0.1);
         emit obdMPH(Speed);
+    }
     if(FuelStatus > 0 )
         emit obdFuelStatus(FuelStatus);
     if(EngineCoolantTemp > 0)
