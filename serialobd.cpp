@@ -194,7 +194,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     RPM = QByteArray::fromHex(sRPM).toHex().toUInt(false,16) / 4;
     if(RPM > 0){
 
-        RPM = RPM - (RPM % 100);
+        RPM = RPM - (RPM % 10);
         qDebug() << "RPM: " << RPM;
     }
 

@@ -35,6 +35,7 @@ Window {
                 width: 70
                 anchors.centerIn: rpm
                 transform: Rotation { origin.x: 35; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle }
+                smooth: true
             }
 
             Rectangle{
@@ -117,6 +118,7 @@ Window {
                 height: 120
                 width: 70
                 transform: Rotation { origin.x: 35; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle}
+                smooth: true
             }
 
 
@@ -151,7 +153,7 @@ Window {
         onObdRPM: rpmneedle.angle = rpm * 0.045 + 179.5
         onObdMPH: {liveMPH.text = speed - 1; mphneedle.angle = (speed - 1) * 2.25 + 180}
         onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
-        onObdCoolantTemp: tempneedle.angle = coolantTemp * 2.25 + 270
+        onObdCoolantTemp: tempneedle.angle = coolantTemp* 2.25 + 270
         //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
     }
