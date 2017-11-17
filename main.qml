@@ -68,10 +68,7 @@ Window {
                     font.pointSize: 20
                     color: "#0059ff"
                     font.bold: true
-
                 }
-
-
             }
 
             Image{
@@ -92,8 +89,19 @@ Window {
                     width: 100
                     source: "qrc:/gauges/tempneedle.png"
                     anchors.centerIn: parent
-                    anchors.horizontalCenterOffset: -4
-                    transform: Rotation { origin.x: 50; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle }
+                    anchors.horizontalCenterOffset: -5
+                    anchors.verticalCenterOffset: 30
+                    transform: Rotation { origin.x: 50; origin.y: 65; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle}
+                }
+
+                Text{
+                    id: texttemp
+                    anchors.centerIn: tempneedle
+                    anchors.verticalCenterOffset: 15
+                    font.pointSize: 25
+                    color: "#0059ff"
+                    text: "--"
+                    font.family: "Calibri"
                 }
 
             }
@@ -144,16 +152,14 @@ Window {
                     anchors.verticalCenterOffset: -10
                 }
             }
-
         }
-
     }
     Connections{
         target: Work
         onObdRPM: rpmneedle.angle = rpm * 0.045 + 179.5
         onObdMPH: {liveMPH.text = speed - 1; mphneedle.angle = (speed - 1) * 2.25 + 180}
         onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
-        onObdCoolantTemp: tempneedle.angle = coolantTemp* 2.25 + 270
+        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = (coolantTemp - 40) * 1.8 + 32}
         //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
     }

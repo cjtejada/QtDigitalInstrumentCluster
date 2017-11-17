@@ -2,7 +2,7 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
-    //ParseAndReportClusterData("");
+    ParseAndReportClusterData("");
 
     //////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////
@@ -206,9 +206,10 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(FuelStatus > 0)
         qDebug() << "FUEL :" << FuelStatus << "%" ;
 
-    EngineCoolantTemp = (QByteArray::fromHex(sECoolantTemp).toHex().toUInt(false,16) - 40);
+    EngineCoolantTemp = (QByteArray::fromHex(sECoolantTemp).toHex().toUInt(false,16));
     if(EngineCoolantTemp > 0)
         qDebug() << "Coolant Temp: " << EngineCoolantTemp << "C";
+
 
     ThrottlePosition = QByteArray::fromHex(sThrottlePosition).toHex().toUInt(false,16) * 0.392156;
     if(ThrottlePosition > 0 && ThrottlePosition <= 100)
@@ -225,15 +226,9 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
         TroubleCode = "Network Code: U" + sTroubleCode;
 
-    //Speed = 80;
-    //while(true){
-
     //qDebug() << TroubleCode;
     ArrayRPM[GaugeCount] = RPM;
     ArrayMPH[GaugeCount] = Speed;
-
-    //ArrayMPH[0] = 56;
-    //ArrayMPH[1] = 20;
 
     if(ArrayRPM[0] > 100 && ArrayRPM[1] > 100)
         DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
@@ -273,12 +268,12 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
 
     if(FuelStatus > 0 )
         emit obdFuelStatus(FuelStatus);
+
     if(EngineCoolantTemp > 0)
         emit obdCoolantTemp(EngineCoolantTemp);
+
     if(ThrottlePosition > 0)
         emit obdThrottlePosition(ThrottlePosition);
     if(TroubleCode != "0")
         emit obdTroubleCode(TroubleCode);
-    //}
-
 }
