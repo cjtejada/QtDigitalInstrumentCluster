@@ -240,14 +240,16 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         GaugeCount = 1;
 
     if(ArrayRPM[0] + DifRPM > ArrayRPM[0] / 2){
-        int r = 0;
         int newrpm = 0;
-        int i = DifRPM / 50;
         newrpm = ArrayRPM[0] + DifRPM;
-        while(r < 50){
+        for(int i = 0; i != DifRPM;){
             emit obdRPM(ArrayRPM[0] + i);
-            i = i + DifRPM / 50;
-            r++;
+            //qDebug() << ArrayRPM[0] + i;
+            QThread::msleep(100/DifRPM);
+            if(DifRPM < 0)
+                i--;
+            else
+                i++;
         }
         ArrayRPM[0] = newrpm;
     }
