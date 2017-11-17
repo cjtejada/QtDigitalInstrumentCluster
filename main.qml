@@ -159,7 +159,7 @@ Window {
         onObdRPM: rpmneedle.angle = rpm * 0.045 + 179.5
         onObdMPH: {liveMPH.text = speed - 1; mphneedle.angle = (speed - 1) * 2.25 + 180}
         onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
-        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = (coolantTemp - 40) * 1.8 + 32}
+        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0)}
         //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
         //onObdTroubleCode: liveTroubleCode.text = troublecode
     }
