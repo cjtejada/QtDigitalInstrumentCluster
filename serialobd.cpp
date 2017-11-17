@@ -2,7 +2,7 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
-    ParseAndReportClusterData("");
+    //ParseAndReportClusterData("");
 
     //////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////
@@ -192,8 +192,11 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     qDebug() << "_____________________________";
 
     RPM = QByteArray::fromHex(sRPM).toHex().toUInt(false,16) / 4;
-    if(RPM > 0)
+    if(RPM > 0){
+
+        RPM = RPM - (RPM % 100);
         qDebug() << "RPM: " << RPM;
+    }
 
     Speed = QByteArray::fromHex(sSpeed).toHex().toUInt(false,16) * 0.621371;
     if(Speed >= 0)
@@ -223,16 +226,23 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         TroubleCode = "Network Code: U" + sTroubleCode;
 
     //Speed = 80;
+    //while(true){
 
     //qDebug() << TroubleCode;
     ArrayRPM[GaugeCount] = RPM;
     ArrayMPH[GaugeCount] = Speed;
 
-    if(ArrayRPM[0] != 0)
-        GaugeCount = 1;
+    //ArrayMPH[0] = 56;
+    //ArrayMPH[1] = 20;
 
     if(ArrayRPM[0] > 100 && ArrayRPM[1] > 100)
         DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
+
+    if(GaugeCount == 1)
+        DifMPH = -1 * (ArrayMPH[0] - ArrayMPH[1]);
+
+    if(ArrayRPM[1] != 0)
+        GaugeCount = 1;
 
     if(ArrayRPM[0] + DifRPM > ArrayRPM[0] / 2){
         int r = 0;
@@ -243,15 +253,24 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
             emit obdRPM(ArrayRPM[0] + i);
             i = i + DifRPM / 50;
             r++;
-            QThread::msleep(0.1);
         }
         ArrayRPM[0] = newrpm;
     }
 
-    if(Speed > 0 ){
-        QThread::msleep(0.1);
-        emit obdMPH(Speed);
+    if(Speed != 0){
+        double i = 0, r = 0;
+        int newmph = ArrayMPH[0] + DifMPH;
+
+        while(r != 20){
+            i = i + DifMPH / 20;
+            emit obdMPH(ArrayMPH[0] + i);
+            r++;
+            if(DifMPH == 0)
+                break;
+        }
+        ArrayMPH[0] == newmph;
     }
+
     if(FuelStatus > 0 )
         emit obdFuelStatus(FuelStatus);
     if(EngineCoolantTemp > 0)
@@ -260,5 +279,6 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         emit obdThrottlePosition(ThrottlePosition);
     if(TroubleCode != "0")
         emit obdTroubleCode(TroubleCode);
+    //}
 
 }
