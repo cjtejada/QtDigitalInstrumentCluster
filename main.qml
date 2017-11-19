@@ -23,18 +23,16 @@ Window {
             width: 700
             anchors.left: parent.left
             anchors.bottom: parent.bottom
-            transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: 15}
+            transform: Rotation { origin.x: 0; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: 20}
 
             Image {
                 id: rpmneedle
                 property double angle: 179.5
                 source: "qrc:/gauges/needle.png"
-                height: 120
                 anchors.verticalCenterOffset: -275
-                anchors.horizontalCenterOffset: -3
-                width: 70
+                anchors.horizontalCenterOffset: -1.5
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 35; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle }
+                transform: Rotation { origin.x: 25; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: 180 }
                 smooth: true
             }
 
@@ -98,7 +96,7 @@ Window {
                     id: texttemp
                     anchors.centerIn: tempneedle
                     anchors.verticalCenterOffset: 15
-                    font.pointSize: 25
+                    font.pointSize: 22
                     color: "#0059ff"
                     text: "--"
                     font.family: "Calibri"
@@ -114,18 +112,16 @@ Window {
             width: 700
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -15 }
+            transform: Rotation { origin.x: 750; origin.y: 0; axis { x: 0; y: 1; z: 0 } angle: -20 }
 
 
             Image {
                 id: mphneedle
                 property double angle: 180
-                x: 290
+                x: 300
                 y: 45
                 source: "qrc:/gauges/needle.png"
-                height: 120
-                width: 70
-                transform: Rotation { origin.x: 35; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle}
+                transform: Rotation { origin.x: 25; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle}
                 smooth: true
             }
 

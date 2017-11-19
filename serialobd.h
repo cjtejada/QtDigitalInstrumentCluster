@@ -41,7 +41,7 @@ private:
     double DifMPH = 0;
 
     int ArrayRPM[2] = {0};
-    int ArrayMPH[2] = {1,1};
+    int ArrayMPH[2] = {0};
 
 };
 
