@@ -13,8 +13,8 @@ Window {
         anchors.fill: parent
 
         gradient: Gradient {
-            GradientStop { position: 0.0; color: "darkgrey" }
-            GradientStop { position: 0.5; color: "white" }
+            GradientStop { position: 0.2; color: "darkgrey" }
+            GradientStop { position: 1.2; color: "white" }
         }
 
         Rectangle{
@@ -32,7 +32,7 @@ Window {
                 anchors.verticalCenterOffset: -275
                 anchors.horizontalCenterOffset: -1.5
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 25; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: 180 }
+                transform: Rotation { origin.x: 25; origin.y: 330; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle }
                 smooth: true
             }
 

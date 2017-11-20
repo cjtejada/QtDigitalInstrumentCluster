@@ -2,7 +2,7 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
-    ParseAndReportClusterData("");
+    //ParseAndReportClusterData("");
 
     //////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////
@@ -244,7 +244,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         for(int i = 0; i != DifRPM;){
             emit obdRPM(ArrayRPM[0] + i);
             qDebug() << ArrayRPM[0] + i;
-            //QThread::msleep(1); THIS WILL SMOOTHEN OUT THE TRANSITION
+            QThread::msleep(0.1); //THIS WILL SMOOTHEN OUT THE TRANSITION
             if(DifRPM < 0)
                 i--;
             else
@@ -253,19 +253,8 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         ArrayRPM[0] = newrpm;
     }
 
-//    if(Speed != 0){
-//        int newmph = ArrayMPH[0] + DifMPH;
-//        for(int i = 0; i != DifMPH;){
-//            emit obdRPM(ArrayMPH[0] + i);
-//            //qDebug() << ArrayRPM[0] + i;
-//            QThread::msleep(100/DifMPH);
-//            if(DifMPH < 0)
-//                i--;
-//            else
-//                i++;
-//        }
-//        ArrayMPH[0] == newmph;
-//    }
+    if(Speed != 0)
+        emit obdMPH(Speed);
 
     if(FuelStatus > 0 )
         emit obdFuelStatus(FuelStatus);
