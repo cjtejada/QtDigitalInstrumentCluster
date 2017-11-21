@@ -26,6 +26,7 @@ void SerialOBD::ConnectToSerialPort()
     if(m_serial.open(QIODevice::ReadWrite)){
         qDebug() << "Port Connected!";
 
+        QThread::msleep(300);
         while(data.isEmpty()){
 
             //Verify OBD Connection

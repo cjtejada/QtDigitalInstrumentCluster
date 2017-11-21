@@ -3,19 +3,47 @@ import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 
 Window {
+    id:mainwin
+    property string wincolor: "black"
     visible: true
-    width: 1920
+    width: 1820
     height: 810
     onBeforeRendering: Work.start();
-    color: "black"
+    color: mainwin.wincolor
 
     Rectangle{
         id: background
         anchors.fill: parent
 
         gradient: Gradient {
-            GradientStop { position: .8; color: "transparent" }
-            GradientStop { position: 1.5; color: "white" }
+            GradientStop { position: .75; color: "transparent" }
+            GradientStop { position: 1.25; color: "white" }
+        }
+
+        Rectangle{
+            color: mainwin.wincolor
+            height: 400
+            width: 400
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            transform: Rotation { origin.x: 400; origin.y: 400; axis { x: 0; y: 0; z: 1 } angle: 45}
+            gradient: Gradient {
+                GradientStop { position: .5; color: mainwin.wincolor }
+                GradientStop { position: .5; color: "transparent" }
+            }
+        }
+
+        Rectangle{
+            color: mainwin.wincolor
+            height: 400
+            width: 400
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            transform: Rotation { origin.x: 0; origin.y: 400; axis { x: 0; y: 0; z: 1 } angle: -45}
+            gradient: Gradient {
+                GradientStop { position: .5; color: mainwin.wincolor }
+                GradientStop { position: .5; color: "transparent" }
+            }
         }
 
         Rectangle{
@@ -33,18 +61,18 @@ Window {
                 anchors.verticalCenterOffset: 128.75
                 anchors.horizontalCenterOffset: 4
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle} //324
+                transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle;
+                Behavior on angle { SpringAnimation { spring: 5; damping: 0.3 ; modulus: 360 }}} //324
                 smooth: true
             }
 
             Rectangle{
                 id: fuelrect
                 height: 75
-                width: 50.35
+                width: 51
                 anchors.centerIn: rpm
                 anchors.verticalCenterOffset: -54
-                anchors.horizontalCenterOffset: -57
-                //color: "transparent"
+                anchors.horizontalCenterOffset: -56.2
                 radius: 10
                 gradient: Gradient {
                     GradientStop { position: 0.3; color: "grey" }
@@ -93,7 +121,8 @@ Window {
                     anchors.centerIn: parent
                     anchors.horizontalCenterOffset: 3
                     anchors.verticalCenterOffset: 15
-                    transform: Rotation { origin.x: 60; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle}
+                    transform: Rotation { origin.x: 60; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
+                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.3 ; modulus: 360 }}}
                 }
 
                 Text{
@@ -126,7 +155,8 @@ Window {
                 anchors.horizontalCenterOffset: 13
                 source: "qrc:/gauges/needle.png"
                 anchors.centerIn: mph
-                transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle}
+                transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle;
+                Behavior on angle { SpringAnimation { spring: 5; damping: 0.3 ; modulus: 360 }}}
                 smooth: true
             }
 
