@@ -192,11 +192,8 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     qDebug() << "_____________________________";
 
     RPM = QByteArray::fromHex(sRPM).toHex().toUInt(false,16) / 4;
-    if(RPM > 0){
-
-        RPM = RPM - (RPM % 10);
+    if(RPM > 0)
         qDebug() << "RPM: " << RPM;
-    }
 
     Speed = QByteArray::fromHex(sSpeed).toHex().toUInt(false,16) * 0.621371;
     if(Speed >= 0)
@@ -226,6 +223,9 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
         TroubleCode = "Network Code: U" + sTroubleCode;
 
+//    ArrayRPM[1] = 1000;
+//    RPM = 1500;
+
     //qDebug() << TroubleCode;
     ArrayRPM[GaugeCount] = RPM;
     ArrayMPH[GaugeCount] = Speed;
@@ -239,19 +239,29 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(ArrayRPM[0] != 0)
         GaugeCount = 1;
 
-    if(RPM > 300){
+    int newdifrpm; //To keep the loop value positive for breaking out of the loop
+
+    if(DifRPM < 0)
+        newdifrpm = -DifRPM;
+    else
+        newdifrpm = DifRPM;
+
+    if(RPM > 200){
+        int r = 0;
         int newrpm = ArrayRPM[0] + DifRPM;
-        for(int i = 0; i != DifRPM;){
-            emit obdRPM(ArrayRPM[0] + i);
-            qDebug() << ArrayRPM[0] + i;
-            QThread::msleep(0.1); //THIS WILL SMOOTHEN OUT THE TRANSITION
+        for(int i = 0; i != (newdifrpm - (newdifrpm % 9)) / 9; i++){
+            emit obdRPM(ArrayRPM[0] + r + (DifRPM % 9));
             if(DifRPM < 0)
-                i--;
+                r = r - 9;
             else
-                i++;
+                r = r + 9;
+            qDebug() << ArrayRPM[0] + r + (DifRPM % 9);
+            //QThread::msleep(100 / ((newdifrpm - (newdifrpm % 9)) / 9));
         }
         ArrayRPM[0] = newrpm;
     }
+    if(DifRPM < 36 && RPM > 100)
+        emit obdRPM(RPM);
 
     if(Speed != 0)
         emit obdMPH(Speed);
