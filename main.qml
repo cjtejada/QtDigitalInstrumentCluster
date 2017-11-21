@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
+import QtGraphicalEffects 1.0
 
 Window {
     id:mainwin
@@ -62,17 +63,17 @@ Window {
                 anchors.horizontalCenterOffset: 4
                 anchors.centerIn: rpm
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle;
-                Behavior on angle { SpringAnimation { spring: 5; damping: 0.3 ; modulus: 360 }}} //324
+                Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}} //324
                 smooth: true
             }
 
             Rectangle{
                 id: fuelrect
                 height: 75
-                width: 51
+                width: 50
                 anchors.centerIn: rpm
                 anchors.verticalCenterOffset: -54
-                anchors.horizontalCenterOffset: -56.2
+                anchors.horizontalCenterOffset: -56.75
                 radius: 10
                 gradient: Gradient {
                     GradientStop { position: 0.3; color: "grey" }
@@ -122,7 +123,7 @@ Window {
                     anchors.horizontalCenterOffset: 3
                     anchors.verticalCenterOffset: 15
                     transform: Rotation { origin.x: 60; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
-                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.3 ; modulus: 360 }}}
+                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
                 }
 
                 Text{
@@ -159,7 +160,6 @@ Window {
                 Behavior on angle { SpringAnimation { spring: 5; damping: 0.3 ; modulus: 360 }}}
                 smooth: true
             }
-
 
             Image{
                 id: mph

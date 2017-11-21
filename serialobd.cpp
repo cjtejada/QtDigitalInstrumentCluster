@@ -199,44 +199,10 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
         TroubleCode = "Network Code: U" + sTroubleCode;
 
-    //qDebug() << TroubleCode;
-    ArrayRPM[GaugeCount] = RPM;
-    ArrayMPH[GaugeCount] = Speed;
-
-    if(GaugeCount == 1)
-        DifRPM = -1 * (ArrayRPM[0] - ArrayRPM[1]);
-
-    if(GaugeCount == 1)
-        DifMPH = -1 * (ArrayMPH[0] - ArrayMPH[1]);
-
-    if(ArrayRPM[0] != 0)
-        GaugeCount = 1;
-
-    int newdifrpm;
-
-    if(DifRPM < 0)
-        newdifrpm = -DifRPM;
-    else
-        newdifrpm = DifRPM;
-
-    if(RPM > 200){
-        int r = 0;
-        int newrpm = ArrayRPM[0] + DifRPM;
-        for(int i = 0; i != (newdifrpm - (newdifrpm % 9)) / 9; i++){
-            emit obdRPM(ArrayRPM[0] + r + (DifRPM % 9));
-            if(DifRPM < 0)
-                r = r - 9;
-            else
-                r = r + 9;
-            qDebug() << ArrayRPM[0] + r + (DifRPM % 9);
-            //QThread::msleep(100 / ((newdifrpm - (newdifrpm % 9)) / 9));
-        }
-        ArrayRPM[0] = newrpm;
-    }
-    if(DifRPM < 36 && RPM > 100)
+    if(RPM > 100)
         emit obdRPM(RPM);
 
-    if(Speed != 0)
+    if(Speed > 0)
         emit obdMPH(Speed);
 
     if(FuelStatus > 0 )
