@@ -3,9 +3,6 @@
 void SerialOBD::ConnectToSerialPort()
 {
     //ParseAndReportClusterData("");
-
-    //////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////
     QSerialPortInfo serialInfo;
     QList <QSerialPortInfo> availablePorts;
 
@@ -14,7 +11,7 @@ void SerialOBD::ConnectToSerialPort()
 
     availablePorts = serialInfo.availablePorts();
 
-    //qDebug() << availablePorts.at(0).portName();
+    qDebug() << availablePorts.at(0).portName();
 
     if(!availablePorts.empty())
         m_serial.setPortName(availablePorts.at(0).portName());
@@ -85,8 +82,6 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
     QRegExp TCodeRegEx(".*43.*");
     QRegExp dataTemp(".*\\d:\\s\\w\\w\\s\\w\\w\\s\\w\\w\\s\\w\\w\\s\\w\\w.*");
 
-    //data = "//10C0D2F0503\r00D \r0: 41 0C 09 BB 0D 00 \r1: 2F BE 05 90 03 02 00 \r\r>0";
-
     if(!dataTemp.exactMatch(data) && !TCodeRegEx.exactMatch(data))
         data = "";
 
@@ -153,7 +148,7 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
                 }
 
                 if(tempData == PID.getEngineCoolantTemp())
-                {//What if the temp is -40????
+                {
                     for(int j = 0; j < 2; j++)
                         sEngineCoolantTemp[j] = data[i + 1], i++;
                 }
@@ -189,31 +184,11 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
 
     QByteArray TroubleCode;
 
-    //QProcess::execute("clear");
-    qDebug() << "_____________________________";
-
     RPM = QByteArray::fromHex(sRPM).toHex().toUInt(false,16) / 4;
-    if(RPM > 0)
-        qDebug() << "RPM: " << RPM;
-
     Speed = QByteArray::fromHex(sSpeed).toHex().toUInt(false,16) * 0.621371;
-    if(Speed >= 0)
-        qDebug() << "MPH: " << Speed;
-
     FuelStatus = QByteArray::fromHex(sFuelStatus).toHex().toUInt(false,16) * 0.392156;
-    if(FuelStatus > 0)
-        qDebug() << "FUEL :" << FuelStatus << "%" ;
-
     EngineCoolantTemp = (QByteArray::fromHex(sECoolantTemp).toHex().toUInt(false,16));
-    if(EngineCoolantTemp > 0)
-        qDebug() << "Coolant Temp: " << EngineCoolantTemp << "C";
-
-
     ThrottlePosition = QByteArray::fromHex(sThrottlePosition).toHex().toUInt(false,16) * 0.392156;
-    if(ThrottlePosition > 0 && ThrottlePosition <= 100)
-        qDebug() << "Throttle:" << ThrottlePosition << "%" ;
-
-    qDebug() << "_____________________________";
 
     if(sTroubleCode[0] <= '3')
         TroubleCode = "Powertrain Code: P" + sTroubleCode;
@@ -223,9 +198,6 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         TroubleCode = "Body Code: B" + sTroubleCode;
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
         TroubleCode = "Network Code: U" + sTroubleCode;
-
-//    ArrayRPM[1] = 1000;
-//    RPM = 1500;
 
     //qDebug() << TroubleCode;
     ArrayRPM[GaugeCount] = RPM;
@@ -240,7 +212,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(ArrayRPM[0] != 0)
         GaugeCount = 1;
 
-    int newdifrpm; //To keep the loop value positive for breaking out of the loop
+    int newdifrpm;
 
     if(DifRPM < 0)
         newdifrpm = -DifRPM;
