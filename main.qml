@@ -15,10 +15,9 @@ Window {
     Rectangle{
         id: background
         anchors.fill: parent
-
         gradient: Gradient {
-            GradientStop { position: .75; color: "transparent" }
-            GradientStop { position: 1.25; color: "white" }
+            GradientStop { position: .80; color: "transparent" }
+            GradientStop { position: 1; color: "white" }
         }
 
         Rectangle{
@@ -46,7 +45,6 @@ Window {
                 GradientStop { position: .5; color: "transparent" }
             }
         }
-
         Rectangle{
             id: rpmrect
             color: "transparent"
@@ -69,12 +67,12 @@ Window {
 
             Rectangle{
                 id: fuelrect
-                height: 75
-                width: 50
+                height: 75.2
+                width: 49.5
                 anchors.centerIn: rpm
                 anchors.verticalCenterOffset: -54
-                anchors.horizontalCenterOffset: -56.75
-                radius: 10
+                anchors.horizontalCenterOffset: -56.1
+                radius: 6
                 gradient: Gradient {
                     GradientStop { position: 0.3; color: "grey" }
                     GradientStop { position: 1; color: "darkgrey" }
@@ -82,7 +80,7 @@ Window {
 
                 Rectangle{
                     id: fuelprogressbar
-                    property int fuelpercentage: 0
+                    property int fuelpercentage: 12
                     radius: 10
                     anchors.bottom: parent.bottom
                     color: "lightgreen"

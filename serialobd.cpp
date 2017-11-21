@@ -11,10 +11,11 @@ void SerialOBD::ConnectToSerialPort()
 
     availablePorts = serialInfo.availablePorts();
 
-    qDebug() << availablePorts.at(0).portName();
-
-    if(!availablePorts.empty())
+    while(!availablePorts.empty() && availablePorts.at(0) != "ttyUSB0"){
+        qDebug() << availablePorts.at(0).portName();
         m_serial.setPortName(availablePorts.at(0).portName());
+        QThread::msleep(250);
+    }
     m_serial.setBaudRate(QSerialPort::Baud38400);
     m_serial.setDataBits(QSerialPort::Data8);
     m_serial.setParity(QSerialPort::NoParity);
@@ -23,7 +24,7 @@ void SerialOBD::ConnectToSerialPort()
     if(m_serial.open(QIODevice::ReadWrite)){
         qDebug() << "Port Connected!";
 
-        QThread::msleep(300);
+        QThread::msleep(250);
         while(data.isEmpty()){
 
             //Verify OBD Connection
