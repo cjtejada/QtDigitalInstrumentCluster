@@ -11,11 +11,10 @@ void SerialOBD::ConnectToSerialPort()
 
     availablePorts = serialInfo.availablePorts();
 
-    while(!availablePorts.empty() && availablePorts.at(0) != "ttyUSB0"){
-        qDebug() << availablePorts.at(0).portName();
+    qDebug() << availablePorts.at(0).portName();
+
+    if(!availablePorts.empty())
         m_serial.setPortName(availablePorts.at(0).portName());
-        QThread::msleep(250);
-    }
     m_serial.setBaudRate(QSerialPort::Baud38400);
     m_serial.setDataBits(QSerialPort::Data8);
     m_serial.setParity(QSerialPort::NoParity);

@@ -67,12 +67,12 @@ Window {
 
             Rectangle{
                 id: fuelrect
-                height: 75.2
-                width: 49.5
+                height: 98
+                width: 62
                 anchors.centerIn: rpm
-                anchors.verticalCenterOffset: -54
-                anchors.horizontalCenterOffset: -56.1
-                radius: 6
+                anchors.verticalCenterOffset: -65
+                anchors.horizontalCenterOffset: -51.3
+                radius: 10
                 gradient: Gradient {
                     GradientStop { position: 0.3; color: "grey" }
                     GradientStop { position: 1; color: "darkgrey" }
@@ -80,7 +80,7 @@ Window {
 
                 Rectangle{
                     id: fuelprogressbar
-                    property int fuelpercentage: 12
+                    property int fuelpercentage: 0
                     radius: 10
                     anchors.bottom: parent.bottom
                     color: "lightgreen"
@@ -99,7 +99,7 @@ Window {
                     anchors.verticalCenterOffset: 10
                     font.family: "Arial"
                     text: "--%"
-                    font.pointSize: 11
+                    font.pointSize: 15
                     color: "#0059ff"
                     font.bold: true
                 }
@@ -143,8 +143,8 @@ Window {
             color: "transparent"
             anchors.right: background.right
             anchors.bottom: background.bottom
-            height: 565
-            width: 565
+            height: 560
+            width: 600
 
 
             Image {
@@ -155,7 +155,7 @@ Window {
                 source: "qrc:/gauges/needle.png"
                 anchors.centerIn: mph
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle;
-                Behavior on angle { SpringAnimation { spring: 5; damping: 0.3 ; modulus: 360 }}}
+                Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
                 smooth: true
             }
 
