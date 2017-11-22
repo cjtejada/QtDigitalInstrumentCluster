@@ -11,15 +11,17 @@ void SerialOBD::ConnectToSerialPort()
 
     availablePorts = serialInfo.availablePorts();
 
+    if(!availablePorts.empty()){
     qDebug() << "1st Port Detected: " << availablePorts.at(0).portName();
-
     while(availablePorts.at(0).portName() != "ttyUSB0"){
         qDebug() << availablePorts.at(0).portName();
         QThread::msleep(500);
     }
-
-    if(!availablePorts.empty())
         m_serial.setPortName(availablePorts.at(0).portName());
+    }
+    else
+        qDebug() << "EMPTY PORT LIST...";
+
     m_serial.setBaudRate(QSerialPort::Baud38400);
     m_serial.setDataBits(QSerialPort::Data8);
     m_serial.setParity(QSerialPort::NoParity);
@@ -139,37 +141,31 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
                     for(int j = 0; j < 4; j++)
                         sRPM[j] = data[i + 1], i++;
                 }
-
                 if(tempData  == PID.getSpeed())
                 {
                     for(int j = 0; j < 2; j++)
                         sSpeed[j] = data[i + 1], i++;
                 }
-
                 if(tempData == PID.getFuelTankLevel())
                 {
                     for(int j = 0; j < 2; j++)
                         sFuelStatus[j] = data[i + 1], i++;
                 }
-
                 if(tempData == PID.getEngineCoolantTemp())
                 {
                     for(int j = 0; j < 2; j++)
                         sEngineCoolantTemp[j] = data[i + 1], i++;
                 }
-
                 if(tempData == PID.getThrottlePosition())
                 {
                     for(int j = 0; j < 2; j++)
                         sThrottlePosition[j] = data[i + 1], i++;
                 }
-
                 if(tempData == "43")
                 {
                     for(int j = 0; j < 4; j++)
                         sTroubleCode[j] = data[i + 1], i++;
                 }
-
                 tempData = "";
                 k = 0;
             }
@@ -206,16 +202,12 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
 
     if(RPM > 100)
         emit obdRPM(RPM);
-
     if(Speed > 0)
         emit obdMPH(Speed);
-
     if(FuelStatus > 0 )
         emit obdFuelStatus(FuelStatus);
-
     if(EngineCoolantTemp > 0)
         emit obdCoolantTemp(EngineCoolantTemp);
-
     if(ThrottlePosition > 0)
         emit obdThrottlePosition(ThrottlePosition);
     if(TroubleCode != "0")
