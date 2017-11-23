@@ -12,11 +12,11 @@ void SerialOBD::ConnectToSerialPort()
     availablePorts = serialInfo.availablePorts();
 
     if(!availablePorts.empty()){
-    qDebug() << "1st Port Detected: " << availablePorts.at(0).portName();
-    while(availablePorts.at(0).portName() != "ttyUSB0"){
-        qDebug() << availablePorts.at(0).portName();
-        QThread::msleep(500);
-    }
+        qDebug() << "1st Port Detected: " << availablePorts.at(0).portName();
+        while(availablePorts.at(0).portName() != "ttyUSB0"){
+            qDebug() << availablePorts.at(0).portName();
+            QThread::msleep(500);
+        }
         m_serial.setPortName(availablePorts.at(0).portName());
     }
     else
@@ -53,7 +53,6 @@ void SerialOBD::ConnectToSerialPort()
     else
         qDebug() << "ERROR: UNABLE TO OPEN PORT.";
 }
-
 void SerialOBD::RequestClusterData()
 {
     QByteArray data;
@@ -75,7 +74,7 @@ void SerialOBD::RequestClusterData()
     m_serial.waitForReadyRead();
     QThread::msleep(100);
     data = m_serial.readAll();
-
+    qDebug() << data;
     ParseAndReportClusterData(data);
 
 
@@ -175,6 +174,13 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
     HexToDecimal(sRPM,sSpeed,sFuelStatus,sEngineCoolantTemp,sThrottlePosition, sTroubleCode);
 }
 
+void SerialOBD::EngineOff()
+{
+    emit obdRPM(0);
+    emit obdCoolantTemp(0);
+    emit obdThrottlePosition(0);
+}
+
 void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp, QByteArray sThrottlePosition, QByteArray sTroubleCode)
 {
     int RPM = 0;
@@ -182,9 +188,12 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     int FuelStatus = 0;
     int EngineCoolantTemp = 0;
     int ThrottlePosition = 0;
-
+    QTimer RPMtimer;
     QByteArray TroubleCode;
 
+    connect(&RPMtimer,SIGNAL(timeout()),this,SLOT(EngineOff()));
+
+    RPMtimer.start(400);
     RPM = QByteArray::fromHex(sRPM).toHex().toUInt(false,16) / 4;
     Speed = QByteArray::fromHex(sSpeed).toHex().toUInt(false,16) * 0.621371;
     FuelStatus = QByteArray::fromHex(sFuelStatus).toHex().toUInt(false,16) * 0.392156;
@@ -201,7 +210,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         TroubleCode = "Network Code: U" + sTroubleCode;
 
     if(RPM > 100)
-        emit obdRPM(RPM);
+        RPMtimer.stop();emit obdRPM(RPM);
     if(Speed > 0)
         emit obdMPH(Speed);
     if(FuelStatus > 0 )
@@ -210,6 +219,6 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         emit obdCoolantTemp(EngineCoolantTemp);
     if(ThrottlePosition > 0)
         emit obdThrottlePosition(ThrottlePosition);
-    if(TroubleCode != "0")
+    if(TroubleCode != "")
         emit obdTroubleCode(TroubleCode);
 }

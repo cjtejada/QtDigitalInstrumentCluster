@@ -182,8 +182,8 @@ Window {
         onObdMPH: {liveMPH.text = speed - 1; mphneedle.angle = ((speed - 1) * -1.8) + 36}
         onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
         onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0)}
-        //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
-        //onObdTroubleCode: liveTroubleCode.text = troublecode
+        onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
+        onObdTroubleCode: liveTroubleCode.text = troublecode
     }
 
 }

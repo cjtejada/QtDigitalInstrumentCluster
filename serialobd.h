@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QThread>
 #include <QObject>
+#include <QTimer>
 
 #include "pids.h"
 
@@ -28,7 +29,7 @@ signals:
 
 public slots:
     void ConnectToSerialPort();
-
+    void EngineOff();
 
 private:
     PIDs PID;
