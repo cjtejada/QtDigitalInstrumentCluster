@@ -30,6 +30,10 @@ public:
         thread->start();
     }
 
+    ~InstrumentCluster(){
+        thread->quit();
+    }
+
 signals:
     void start();
     void obdRPM(int rpm);
