@@ -29,6 +29,7 @@ public:
         AuxStatus("1E")
         {}
 
+    //gets ECU data https://en.wikipedia.org/wiki/OBD-II_PIDs
     QByteArray getMODE01CurrentData(){
         return MODE01;
     }
@@ -36,7 +37,7 @@ public:
     QByteArray getMODE02FreezeFrameData(){
         return MODE02;
     }
-
+    //checks for trouble codes
     QByteArray getMODE03TROUBLECODES(){
         return MODE03;
     }

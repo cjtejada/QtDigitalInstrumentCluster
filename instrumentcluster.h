@@ -9,6 +9,9 @@ class InstrumentCluster : public QObject
 {
     Q_OBJECT
 public:
+
+    ///run OBD object in a different thread,
+    ///that way there's no blocking operations
     InstrumentCluster(){
         OBD = new SerialOBD;
         thread = new QThread;
@@ -16,6 +19,7 @@ public:
 
         connect(this,SIGNAL(start()),OBD,SLOT(ConnectToSerialPort()));
 
+        //connect signals in OBD object to this object, to report to QML
         connect(OBD,SIGNAL(obdRPM(int)),this,SIGNAL(obdRPM(int)));
         connect(OBD,SIGNAL(obdMPH(int)),this,SIGNAL(obdMPH(int)));
         connect(OBD,SIGNAL(obdFuelStatus(int)),this,SIGNAL(obdFuelStatus(int)));

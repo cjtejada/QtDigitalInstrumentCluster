@@ -61,7 +61,7 @@ Window {
                 anchors.horizontalCenterOffset: 4
                 anchors.centerIn: rpm
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle;
-                Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}} //324
+                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}} //324
                 smooth: true
             }
 
@@ -121,7 +121,7 @@ Window {
                     anchors.horizontalCenterOffset: 3
                     anchors.verticalCenterOffset: 15
                     transform: Rotation { origin.x: 60; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
-                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
+                        Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
                 }
 
                 Text{
@@ -154,7 +154,7 @@ Window {
                 source: "qrc:/gauges/needle.png"
                 anchors.centerIn: mph
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle;
-                Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
+                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
                 smooth: true
             }
 
@@ -209,15 +209,32 @@ Window {
 
         }
     }
+
     Connections{
         target: Work
         onObdRPM: rpmneedle.angle = rpm * 0.036 - 36
-        onObdMPH: {liveMPH.text = speed - 1; mphneedle.angle = ((speed - 1) * -1.8) + 36}
-        onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
-        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0);
-        if(coolantTemp == -100){tempneedle.angle = 270;texttemp.text = "--"}}
-        onObdThrottlePosition: {if(throttle > 60){skull.opacity = (throttle - 58) * .016;}else{skull.opacity = 0}}
-        onObdTroubleCode: {troubleCode.text = troublecode; checkengine.visible = true}
-    }
 
+        onObdMPH: {liveMPH.text = speed - 1;
+            mphneedle.angle = ((speed - 1) * -1.8) + 36
+        }
+
+        onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel;
+            fuelpercent.text = fuel - 3 + "%"
+        }
+        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90;
+            texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0);
+            if(coolantTemp == -100){
+                tempneedle.angle = 270;texttemp.text = "--"
+            }
+        }
+        onObdThrottlePosition: {
+            if(throttle > 60){
+                skull.opacity = (throttle - 58) * .016;}
+            else{skull.opacity = 0
+            }
+        }
+        onObdTroubleCode: {troubleCode.text = troublecode;
+            checkengine.visible = true
+        }
+    }
 }

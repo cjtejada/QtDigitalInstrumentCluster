@@ -2,8 +2,11 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
-    //ParseAndReportClusterData("OPPED\r\r>10C0D2F0511\rS");
+    //ParseAndReportClusterData("OPPED\r\r>10C0D2F0511\rS");//For testing purposes
+
+    //triggers if engine has been turned off
     connect(this,SIGNAL(onEngineOff()),this,SLOT(EngineOff()));
+
     QSerialPortInfo serialInfo;
     QList <QSerialPortInfo> availablePorts;
 
@@ -12,6 +15,7 @@ void SerialOBD::ConnectToSerialPort()
 
     availablePorts = serialInfo.availablePorts();
 
+    //Make sure serial connects to the corrent device
     if(!availablePorts.empty()){
         qDebug() << "1st Port Detected: " << availablePorts.at(0).portName();
         while(availablePorts.at(0).portName() != "ttyUSB0"){
@@ -21,8 +25,9 @@ void SerialOBD::ConnectToSerialPort()
         m_serial.setPortName(availablePorts.at(0).portName());
     }
     else
-        qDebug() << "EMPTY PORT LIST...";
+        qDebug() << "EMPTY PORT LIST...";//make sure the ports list is not empty
 
+    //Set all the port settings
     m_serial.setBaudRate(QSerialPort::Baud38400);
     m_serial.setDataBits(QSerialPort::Data8);
     m_serial.setParity(QSerialPort::NoParity);
@@ -34,7 +39,7 @@ void SerialOBD::ConnectToSerialPort()
         QThread::msleep(250);
         while(data.isEmpty()){
 
-            //Verify OBD Connection
+            //Verify OBD Connection, then continue to verify OBD serial port data
             if(data.isEmpty())
                 m_serial.write("ATE1\r");
             m_serial.waitForBytesWritten();
@@ -53,11 +58,15 @@ void SerialOBD::ConnectToSerialPort()
     else
         qDebug() << "ERROR: UNABLE TO OPEN PORT.";
 }
+///this function gets OBD data from ECU by
+///requesting the data with PIDs
 void SerialOBD::RequestClusterData()
 {
     QByteArray data;
     m_tCodeCounter++;
 
+    ///every 100 iterations of this
+    ///m_tCodeCounter a trouble code is requested
     if(m_tCodeCounter == 100){
         m_serial.write(PID.getMODE03TROUBLECODES() + "\r");
     }
@@ -74,11 +83,14 @@ void SerialOBD::RequestClusterData()
     m_serial.waitForReadyRead();
     QThread::msleep(100);
     data = m_serial.readAll();
+
     ParseAndReportClusterData(data);
-
-
 }
 
+///this function take the data
+/// and parses it to determine which info
+/// goes where and whats the length of the
+/// the requested value
 void SerialOBD::ParseAndReportClusterData(QByteArray data)
 {
     QByteArray tempData;
@@ -172,14 +184,17 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
 
     HexToDecimal(sRPM,sSpeed,sFuelStatus,sEngineCoolantTemp,sThrottlePosition, sTroubleCode);
 }
-
+///this gets emitted when the engine has
+/// not revieved any valid data in 300 milliseconds
 void SerialOBD::EngineOff()
 {
     emit obdRPM(0);
     emit obdCoolantTemp(-100);
     emit obdThrottlePosition(0);
 }
-
+///this function turns the data from
+/// the Parse function into the corresponding value
+/// example: RPM string to an integer
 void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp, QByteArray sThrottlePosition, QByteArray sTroubleCode)
 {
     int RPM = 0;
@@ -201,6 +216,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         ArrayEngineOff[m_engineOffcount] = false;
     m_engineOffcount++;
 
+    //parse trouble code data
     if(sTroubleCode[0] >= '0' && sTroubleCode[0] <= '3')
         TroubleCode = "P" + sTroubleCode;
     if(sTroubleCode[0] >= '4' && sTroubleCode[0] <= '7')
@@ -211,6 +227,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
         TroubleCode = "U" + sTroubleCode;
 
+    //report the values recieved to instrumentcluster class
     if(RPM > 100)
         emit obdRPM(RPM);
     if(Speed > 0)
@@ -224,6 +241,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(TroubleCode != "")
         emit obdTroubleCode(TroubleCode);
 
+    //when this array is entirely false, this will set the cluster values to "off" state
     if(ArrayEngineOff[0] == true && ArrayEngineOff[1] == true && ArrayEngineOff[2] == true)
         EngineOff();
     if(m_engineOffcount == 3){
