@@ -6,5 +6,6 @@
         <file>gauges/RPMGauge.png</file>
         <file>gauges/tempneedle.png</file>
         <file>gauges/checkengine.png</file>
+        <file>gauges/skull.png</file>
     </qresource>
 </RCC>

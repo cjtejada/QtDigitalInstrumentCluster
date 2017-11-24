@@ -146,7 +146,6 @@ Window {
             height: 560
             width: 600
 
-
             Image {
                 id: mphneedle
                 property double angle: 36
@@ -191,6 +190,23 @@ Window {
                     }
                 }
             }
+
+            Image {
+                id: skull
+                source: "qrc:/gauges/skull.png"
+                anchors.centerIn: parent
+                height: 300
+                width: 300
+                opacity: 0
+                anchors.verticalCenterOffset: 10
+                anchors.horizontalCenterOffset: 10
+                ColorOverlay{
+                    anchors.fill: parent
+                    source: parent
+                    color: "#ffffff"
+                }
+            }
+
         }
     }
     Connections{
@@ -200,7 +216,7 @@ Window {
         onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
         onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0);
         if(coolantTemp == -100){tempneedle.angle = 270;texttemp.text = "--"}}
-        //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
+        onObdThrottlePosition: {if(throttle > 60){skull.opacity = (throttle - 58) * .016;}else{skull.opacity = 0}}
         onObdTroubleCode: {troubleCode.text = troublecode; checkengine.visible = true}
     }
 
