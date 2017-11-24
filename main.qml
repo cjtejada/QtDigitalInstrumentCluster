@@ -228,8 +228,8 @@ Window {
             }
         }
         onObdThrottlePosition: {
-            if(throttle > 60){
-                skull.opacity = (throttle - 58) * .016;}
+            if(throttle > 40){
+                skull.opacity = (throttle - 40) * .02;}
             else{skull.opacity = 0
             }
         }
