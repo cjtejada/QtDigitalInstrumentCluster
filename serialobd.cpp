@@ -2,7 +2,8 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
-    //ParseAndReportClusterData("");
+    //ParseAndReportClusterData("OPPED\r\r>10C0D2F0511\rS");
+    connect(this,SIGNAL(onEngineOff()),this,SLOT(EngineOff()));
     QSerialPortInfo serialInfo;
     QList <QSerialPortInfo> availablePorts;
 
@@ -176,8 +177,9 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
 
 void SerialOBD::EngineOff()
 {
+    qDebug() << "NIGNE OFF";
     emit obdRPM(0);
-    emit obdCoolantTemp(0);
+    emit obdCoolantTemp(-100);
     emit obdThrottlePosition(0);
 }
 
@@ -188,29 +190,32 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     int FuelStatus = 0;
     int EngineCoolantTemp = 0;
     int ThrottlePosition = 0;
-    QTimer RPMtimer;
     QByteArray TroubleCode;
 
-    connect(&RPMtimer,SIGNAL(timeout()),this,SLOT(EngineOff()));
-
-    RPMtimer.start(400);
     RPM = QByteArray::fromHex(sRPM).toHex().toUInt(false,16) / 4;
     Speed = QByteArray::fromHex(sSpeed).toHex().toUInt(false,16) * 0.621371;
     FuelStatus = QByteArray::fromHex(sFuelStatus).toHex().toUInt(false,16) * 0.392156;
     EngineCoolantTemp = (QByteArray::fromHex(sECoolantTemp).toHex().toUInt(false,16));
     ThrottlePosition = QByteArray::fromHex(sThrottlePosition).toHex().toUInt(false,16) * 0.392156;
 
-    if(sTroubleCode[0] <= '3')
-        TroubleCode = "Powertrain Code: P" + sTroubleCode;
+    if(RPM == 0)
+        ArrayEngineOff[m_engineOffcount] = true;
+    else
+        ArrayEngineOff[m_engineOffcount] = false;
+    m_engineOffcount++;
+
+    if(sTroubleCode[0] >= '0' && sTroubleCode[0] <= '3')
+        TroubleCode = "P" + sTroubleCode;
     if(sTroubleCode[0] >= '4' && sTroubleCode[0] <= '7')
-        TroubleCode = "Chassis Code: C" + sTroubleCode;
-    if(sTroubleCode[0] == '8' || sTroubleCode[0] == '9' || sTroubleCode[0] == 'A' || sTroubleCode[0] == 'B')
-        TroubleCode = "Body Code: B" + sTroubleCode;
+        TroubleCode = "C" + sTroubleCode;
+    if(sTroubleCode[0] == '8' || sTroubleCode[0] == '9' ||
+            sTroubleCode[0] == 'A' || sTroubleCode[0] == 'B')
+        TroubleCode = "B" + sTroubleCode;
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
-        TroubleCode = "Network Code: U" + sTroubleCode;
+        TroubleCode = "U" + sTroubleCode;
 
     if(RPM > 100)
-        RPMtimer.stop();emit obdRPM(RPM);
+        emit obdRPM(RPM);
     if(Speed > 0)
         emit obdMPH(Speed);
     if(FuelStatus > 0 )
@@ -221,4 +226,13 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         emit obdThrottlePosition(ThrottlePosition);
     if(TroubleCode != "")
         emit obdTroubleCode(TroubleCode);
+
+    if(ArrayEngineOff[0] == true && ArrayEngineOff[1] == true && ArrayEngineOff[2] == true)
+        EngineOff();
+    if(m_engineOffcount == 3){
+        m_engineOffcount = 0;
+        ArrayEngineOff[0] = false;
+        ArrayEngineOff[1] = false;
+        ArrayEngineOff[2] = false;
+    }
 }

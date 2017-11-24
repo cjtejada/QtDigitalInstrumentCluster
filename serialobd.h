@@ -19,6 +19,7 @@ public:
     void ParseAndReportClusterData(QByteArray data);
     void HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp, QByteArray sThrottlePosition, QByteArray sTroubleCode);
 
+
 signals:
     void obdRPM(int rpm);
     void obdMPH(int speed);
@@ -26,6 +27,7 @@ signals:
     void obdCoolantTemp(int coolantTemp);
     void obdThrottlePosition(int throttle);
     void obdTroubleCode(QByteArray troublecode);
+    void onEngineOff();
 
 public slots:
     void ConnectToSerialPort();
@@ -34,7 +36,10 @@ public slots:
 private:
     PIDs PID;
     QSerialPort m_serial;
+
+    bool ArrayEngineOff[3] = {false};
     int m_tCodeCounter = 0;
+    int m_engineOffcount = 0;
 };
 
 #endif // SERIALOBD_H

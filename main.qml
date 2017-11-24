@@ -173,6 +173,23 @@ Window {
                     text: "0"
                     font.family: "Calibri"
                 }
+
+                Image{
+                    visible: false
+                    id: checkengine
+                    source: "qrc:/gauges/checkengine.png"
+                    anchors.centerIn: parent
+                    anchors.verticalCenterOffset: 110
+                    anchors.horizontalCenterOffset: 8
+                    Text{
+                        id: troubleCode
+                        font.pointSize: 13
+                        font.bold: true
+                        color: "gold"
+                        anchors.centerIn: parent
+                        anchors.verticalCenterOffset: 2
+                    }
+                }
             }
         }
     }
@@ -181,9 +198,10 @@ Window {
         onObdRPM: rpmneedle.angle = rpm * 0.036 - 36
         onObdMPH: {liveMPH.text = speed - 1; mphneedle.angle = ((speed - 1) * -1.8) + 36}
         onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel; fuelpercent.text = fuel - 3 + "%"}
-        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0)}
-        onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
-        onObdTroubleCode: liveTroubleCode.text = troublecode
+        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90; texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0);
+        if(coolantTemp == -100){tempneedle.angle = 270;texttemp.text = "--"}}
+        //onObdThrottlePosition: liveThrottlePosition.text = "Throttle: " + throttle + "%"
+        onObdTroubleCode: {troubleCode.text = troublecode; checkengine.visible = true}
     }
 
 }
