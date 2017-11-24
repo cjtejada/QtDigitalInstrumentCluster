@@ -41,7 +41,6 @@ void SerialOBD::ConnectToSerialPort()
             m_serial.waitForReadyRead();
             QThread::msleep(50);
             data = m_serial.readAll();
-            qDebug() << data;
             if(regExOk.exactMatch(data)){
                 while(!data.isEmpty())
                     RequestClusterData();
@@ -75,7 +74,6 @@ void SerialOBD::RequestClusterData()
     m_serial.waitForReadyRead();
     QThread::msleep(100);
     data = m_serial.readAll();
-    qDebug() << data;
     ParseAndReportClusterData(data);
 
 
@@ -177,7 +175,6 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
 
 void SerialOBD::EngineOff()
 {
-    qDebug() << "NIGNE OFF";
     emit obdRPM(0);
     emit obdCoolantTemp(-100);
     emit obdThrottlePosition(0);
