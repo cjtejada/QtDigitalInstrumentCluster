@@ -7,5 +7,6 @@
         <file>gauges/tempneedle.png</file>
         <file>gauges/checkengine.png</file>
         <file>gauges/skull.png</file>
+        <file>gauges/spinner.gif</file>
     </qresource>
 </RCC>

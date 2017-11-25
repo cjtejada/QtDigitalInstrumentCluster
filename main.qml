@@ -1,4 +1,4 @@
-import QtQuick 2.5
+import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
@@ -134,8 +134,25 @@ Window {
                     font.family: "Calibri"
                 }
 
-            }
+                AnimatedImage{
+                    id: mpg
+                    source: "qrc:/gauges/spinner.gif"
+                    anchors.centerIn: parent
+                    anchors.horizontalCenterOffset: 45
+                    anchors.verticalCenterOffset: -65
+                    height: 116
+                    width: 116
 
+                    Text{
+                        id: mpgtext
+                        anchors.centerIn: parent
+                        font.pointSize: 15
+                        color: "white"
+                        text: "22.3\nMPG"
+                    }
+                }
+
+            }
         }
 
         Rectangle{
@@ -222,7 +239,7 @@ Window {
             fuelpercent.text = fuel - 3 + "%"
         }
         onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90;
-            texttemp.text = ((coolantTemp - 40) * 1.8 + 32).toFixed(0);
+            texttemp.text = ((coolantTemp - 40) * 1.4 + 32).toFixed(0);
             if(coolantTemp == -100){
                 tempneedle.angle = 270;texttemp.text = "--"
             }

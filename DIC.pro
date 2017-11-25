@@ -5,8 +5,6 @@ QT += serialport
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    pids.cpp \
-    instrumentcluster.cpp \
     serialobd.cpp
 
 RESOURCES += qml.qrc

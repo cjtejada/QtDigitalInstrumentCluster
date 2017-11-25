@@ -65,8 +65,8 @@ void SerialOBD::RequestClusterData()
     QByteArray data;
     m_tCodeCounter++;
 
-    ///every 100 iterations of this
-    ///m_tCodeCounter a trouble code is requested
+    ///every 100 iterations of m_tCodeCounter
+    ///a trouble code is requested
     if(m_tCodeCounter == 100){
         m_serial.write(PID.getMODE03TROUBLECODES() + "\r");
     }
