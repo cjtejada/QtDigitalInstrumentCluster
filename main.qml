@@ -87,7 +87,7 @@ Window {
                     width: parent.width
                     height: parent.height * (fuelprogressbar.fuelpercentage * .01)
                     gradient: Gradient {
-                        GradientStop { position: 0.5; color: "lightgreen" }
+                        GradientStop { position: 0.2; color: "lightgreen" }
                         GradientStop { position: 1; color: "green" }
                     }
 
@@ -144,11 +144,20 @@ Window {
                     width: 116
 
                     Text{
-                        id: mpgtext
                         anchors.centerIn: parent
-                        font.pointSize: 15
+                        anchors.verticalCenterOffset: -10
+                        font.pointSize: 12
                         color: "white"
-                        text: "22.3\nMPG"
+                        text: "MPG"
+
+                        Text{
+                            id: mpgtext
+                            anchors.centerIn: parent
+                            anchors.verticalCenterOffset: 25
+                            font.pointSize: 15
+                            color: "white"
+                            text: "..."
+                        }
                     }
                 }
 
@@ -229,7 +238,9 @@ Window {
 
     Connections{
         target: Work
-        onObdRPM: rpmneedle.angle = rpm * 0.036 - 36
+        onObdRPM: {rpmneedle.angle = rpm * 0.036 - 36;
+            skull.opacity = ((rpm * .1) -450) * .01
+        }
 
         onObdMPH: {liveMPH.text = speed - 1;
             mphneedle.angle = ((speed - 1) * -1.8) + 36
@@ -244,14 +255,9 @@ Window {
                 tempneedle.angle = 270;texttemp.text = "--"
             }
         }
-        onObdThrottlePosition: {
-            if(throttle > 40){
-                skull.opacity = (throttle - 40) * .02;}
-            else{skull.opacity = 0
-            }
-        }
         onObdTroubleCode: {troubleCode.text = troublecode;
             checkengine.visible = true
         }
+        onObdMPG: mpgtext.text = mpg
     }
 }

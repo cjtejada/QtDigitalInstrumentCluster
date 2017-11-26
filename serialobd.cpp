@@ -2,7 +2,7 @@
 
 void SerialOBD::ConnectToSerialPort()
 {
-    //ParseAndReportClusterData("OPPED\r\r>10C0D2F0511\rS");//For testing purposes
+    ParseAndReportClusterData("OPPED\r\r>10C0D2F0511\rS");//For testing purposes
 
     //triggers if engine has been turned off
     connect(this,SIGNAL(onEngineOff()),this,SLOT(EngineOff()));
@@ -22,7 +22,7 @@ void SerialOBD::ConnectToSerialPort()
             qDebug() << availablePorts.at(0).portName();
             QThread::msleep(500);
         }
-        m_serial.setPortName(availablePorts.at(0).portName());
+        m_serial.setPortName("ttyUSB0");
     }
     else
         qDebug() << "EMPTY PORT LIST...";//make sure the ports list is not empty
@@ -76,13 +76,15 @@ void SerialOBD::RequestClusterData()
                        PID.getSpeed() +
                        PID.getFuelTankLevel() +
                        PID.getEngineCoolantTemp() +
-                       PID.getThrottlePosition() + "\r");
+                       PID.getEngineStartRunTime() +"\r");
     }
 
     m_serial.waitForBytesWritten();
     m_serial.waitForReadyRead();
     QThread::msleep(100);
     data = m_serial.readAll();
+
+    qDebug() << data;
 
     ParseAndReportClusterData(data);
 }
@@ -94,7 +96,7 @@ void SerialOBD::RequestClusterData()
 void SerialOBD::ParseAndReportClusterData(QByteArray data)
 {
     QByteArray tempData;
-    QByteArray sRPM, sSpeed, sFuelStatus, sEngineCoolantTemp, sTroubleCode, sThrottlePosition;
+    QByteArray sRPM, sSpeed, sFuelStatus, sEngineCoolantTemp, sTroubleCode, sThrottlePosition, sEngineStartRunTime;
     int k = 0;
     QRegExp TCodeRegEx(".*43.*");
     QRegExp dataTemp(".*\\d:\\s\\w\\w\\s\\w\\w\\s\\w\\w\\s\\w\\w\\s\\w\\w.*");
@@ -176,39 +178,73 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
                     for(int j = 0; j < 4; j++)
                         sTroubleCode[j] = data[i + 1], i++;
                 }
+                if(tempData == PID.getEngineStartRunTime())
+                {
+                    for(int j = 0; j < 4; j++)
+                        sEngineStartRunTime[j] = data[i + 1], i++;
+                }
+
                 tempData = "";
                 k = 0;
             }
         }
     }
 
-    HexToDecimal(sRPM,sSpeed,sFuelStatus,sEngineCoolantTemp,sThrottlePosition, sTroubleCode);
+    HexToDecimal(sRPM,sSpeed,sFuelStatus,sEngineCoolantTemp,sThrottlePosition, sTroubleCode, sEngineStartRunTime);
 }
+
+float SerialOBD::CalculateMPG(float EngineStartRunTime, int Speed, int fuel)
+{
+    float MPG = 0;
+    float CurrentFuelStatus = 0;
+    float EngineRunTime = (EngineStartRunTime/60) / 60;
+
+    if(m_EngineOnIterations == 0)
+        m_FuelStatusStart = (fuel * .01) * 16;
+
+    CurrentFuelStatus = (fuel * .01) * 16;
+
+    m_EngineOnIterations++;
+
+    m_Speed = m_Speed + Speed;
+    m_AvgSpeed = m_Speed / m_EngineOnIterations;
+
+    MPG = ((m_AvgSpeed + .04) * EngineRunTime)/(m_FuelStatusStart - CurrentFuelStatus);
+
+    qDebug() << MPG;
+
+    return MPG;
+}
+
 ///this gets emitted when the engine has
 /// not revieved any valid data in 300 milliseconds
 void SerialOBD::EngineOff()
 {
     emit obdRPM(0);
     emit obdCoolantTemp(-100);
-    emit obdThrottlePosition(0);
 }
 ///this function turns the data from
 /// the Parse function into the corresponding value
 /// example: RPM string to an integer
-void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp, QByteArray sThrottlePosition, QByteArray sTroubleCode)
+void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp,
+                             QByteArray sThrottlePosition, QByteArray sTroubleCode, QByteArray sEngineStartRunTime)
 {
     int RPM = 0;
     int Speed = 0;
     int FuelStatus = 0;
     int EngineCoolantTemp = 0;
     int ThrottlePosition = 0;
+    float EngineStartRunTime = 0;
+    float MPG = 0;
+    bool falsebool = false;
     QByteArray TroubleCode;
 
-    RPM = QByteArray::fromHex(sRPM).toHex().toUInt(false,16) / 4;
-    Speed = QByteArray::fromHex(sSpeed).toHex().toUInt(false,16) * 0.621371;
-    FuelStatus = QByteArray::fromHex(sFuelStatus).toHex().toUInt(false,16) * 0.392156;
-    EngineCoolantTemp = (QByteArray::fromHex(sECoolantTemp).toHex().toUInt(false,16));
-    ThrottlePosition = QByteArray::fromHex(sThrottlePosition).toHex().toUInt(false,16) * 0.392156;
+    RPM = QByteArray::fromHex(sRPM).toHex().toUInt(&falsebool,16) / 4;
+    Speed = QByteArray::fromHex(sSpeed).toHex().toUInt(&falsebool,16) * 0.621371;
+    FuelStatus = QByteArray::fromHex(sFuelStatus).toHex().toUInt(&falsebool,16) * 0.392156;
+    EngineCoolantTemp = (QByteArray::fromHex(sECoolantTemp).toHex().toUInt(&falsebool,16));
+    ThrottlePosition = QByteArray::fromHex(sThrottlePosition).toHex().toUInt(&falsebool,16) * 0.392156;
+    EngineStartRunTime = QByteArray::fromHex(sEngineStartRunTime).toHex().toUInt(&falsebool,16);
 
     if(RPM == 0)
         ArrayEngineOff[m_engineOffcount] = true;
@@ -227,6 +263,9 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(sTroubleCode[0] >= 'C' && sTroubleCode[0] <= 'F')
         TroubleCode = "U" + sTroubleCode;
 
+    if(EngineStartRunTime > 150 && FuelStatus != 0)
+        MPG = CalculateMPG(EngineStartRunTime, Speed, FuelStatus);
+
     //report the values recieved to instrumentcluster class
     if(RPM > 100)
         emit obdRPM(RPM);
@@ -237,9 +276,9 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     if(EngineCoolantTemp > 0)
         emit obdCoolantTemp(EngineCoolantTemp);
     if(ThrottlePosition > 0)
-        emit obdThrottlePosition(ThrottlePosition);
-    if(TroubleCode != "")
         emit obdTroubleCode(TroubleCode);
+    if(MPG > 16 && MPG < 30 && EngineStartRunTime > 300)
+        emit obdMPG(MPG);
 
     //when this array is entirely false, this will set the cluster values to "off" state
     if(ArrayEngineOff[0] == true && ArrayEngineOff[1] == true && ArrayEngineOff[2] == true)

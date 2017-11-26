@@ -26,7 +26,8 @@ public:
         Speed("0D"),
         IntakeAirTemp("0F"),
         ThrottlePosition("11"),
-        AuxStatus("1E")
+        AuxStatus("1E"),
+        EngineStartRuntime("1F")
         {}
 
     //gets ECU data https://en.wikipedia.org/wiki/OBD-II_PIDs
@@ -110,6 +111,9 @@ public:
         return AuxStatus;
     }
 
+    QByteArray getEngineStartRunTime(){
+        return EngineStartRuntime;
+    }
 
 private:
 
@@ -134,6 +138,7 @@ private:
     QByteArray IntakeAirTemp;
     QByteArray ThrottlePosition;
     QByteArray AuxStatus;
+    QByteArray EngineStartRuntime;
 
 };
 
