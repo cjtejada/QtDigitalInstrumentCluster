@@ -42,8 +42,8 @@ void SerialOBD::ConnectToSerialPort()
             //Verify OBD Connection, then continue to verify OBD serial port data
             if(data.isEmpty())
                 m_serial.write("ATE1\r");
-            m_serial.waitForBytesWritten();
-            m_serial.waitForReadyRead();
+            m_serial.waitForBytesWritten(5000);
+            m_serial.waitForReadyRead(5000);
             QThread::msleep(50);
             data = m_serial.readAll();
             if(regExOk.exactMatch(data)){
@@ -79,8 +79,8 @@ void SerialOBD::RequestClusterData()
                        PID.getEngineStartRunTime() +"\r");
     }
 
-    m_serial.waitForBytesWritten();
-    m_serial.waitForReadyRead();
+    m_serial.waitForBytesWritten(5000);
+    m_serial.waitForReadyRead(5000);
     QThread::msleep(100);
     data = m_serial.readAll();
 
