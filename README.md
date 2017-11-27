@@ -1,4 +1,4 @@
 # QtDigitalInstrumentCluster
 This is a digital instrument cluster project that when paired with an OBD II to USB cable it can display live data from the vehicle's computer (ECU). It can also display information that regular instrument clusters cannot, such as engine trouble codes, calculated engine load, intake air temperature, throtle position and much more.
 
-This project is developed to run in a Linux environment, however you can also deploy it on Windows but you will not be able to communicate with an OBD serial port (This is only if you would like to see the Digital Cluster design). To run on windows go to serialobd.cpp and give m_serial.waitForBytesWritten() and m_serial.waitForReadyRead() an argument of 10 milliseconds, also initialize arrays however your compiler would like them to be initialized.
+This project is developed to run in a Linux environment, however you can also deploy it on Windows but you will not be able to communicate with an OBD serial port (This is only if you would like to see the Digital Cluster design).
