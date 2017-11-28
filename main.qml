@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.0
 
 Window {
     id:mainwin
-    property string wincolor: "black"
+    property string wincolor: "white"
     visible: true
     width: 1920
     height: 810
@@ -71,7 +71,7 @@ Window {
                 anchors.verticalCenterOffset: 80
                 anchors.horizontalCenterOffset: 5
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 3; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: fuelpneedle.angle;
+                transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: fuelpneedle.angle;
                     Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
             }
 
@@ -82,7 +82,7 @@ Window {
                 anchors.verticalCenterOffset: 80
                 anchors.horizontalCenterOffset: 5
                 anchors.centerIn: rpm
-                transform: Rotation { origin.x: 3; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
+                transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
                     Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
             }
 
