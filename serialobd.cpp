@@ -197,8 +197,8 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
 void SerialOBD::EngineOff()
 {
     emit obdRPM(0);
-    emit obdCoolantTemp(-100);
-    emit obdFuelStatus(0);
+    emit obdCoolantTemp(300);
+    emit obdFuelStatus(-10);
     emit obdCoolantTemp(0);
 }
 ///this function turns the data from

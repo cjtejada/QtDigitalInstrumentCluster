@@ -171,7 +171,6 @@ Window {
         onObdRPM: {rpmneedle.angle = rpm * 0.036 - 36;
             skull.opacity = ((rpm * .1) -450) * .01;
             liveMPH.opacity = 1 - (skull.opacity)
-            console.log(liveMPH.opacity.toString())
         }
 
         onObdMPH: {liveMPH.text = speed - 1;
@@ -184,6 +183,5 @@ Window {
         onObdTroubleCode: {troubleCode.text = troublecode;
             checkengine.visible = true
         }
-        onObdMPG: mpgtext.text = mpg.toFixed(1)
     }
 }
