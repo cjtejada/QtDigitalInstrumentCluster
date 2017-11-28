@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.0
 
 Window {
     id:mainwin
-    property string wincolor: "white"
+    property string wincolor: "black"
     visible: true
     width: 1920
     height: 810
@@ -51,6 +51,23 @@ Window {
             width: 550
             anchors.left: parent.left
             anchors.bottom: parent.bottom
+
+            Rectangle{
+                id:rpmblurr
+                height: rpm.height -32
+                width: rpm.width -32
+                anchors.centerIn: rpm
+                anchors.horizontalCenterOffset: 5
+                anchors.verticalCenterOffset: 1
+                color: mainwin.wincolor
+                radius: 360
+                opacity: .2
+                FastBlur{
+                    anchors.fill: parent
+                    source: rpm
+                    radius: 64
+                }
+            }
 
             Image {
                 id: rpmneedle
@@ -101,6 +118,23 @@ Window {
             anchors.bottom: background.bottom
             height: 560
             width: 600
+
+            Rectangle{
+                id:mphblurr
+                height: mph.height -34
+                width: mph.width -34
+                anchors.centerIn: mph
+                anchors.horizontalCenterOffset: 12
+                anchors.verticalCenterOffset: 10
+                color: mainwin.wincolor
+                radius: 360
+                opacity: .2
+                FastBlur{
+                    anchors.fill: parent
+                    source: mph
+                    radius: 64
+                }
+            }
 
             Image {
                 id: mphneedle
