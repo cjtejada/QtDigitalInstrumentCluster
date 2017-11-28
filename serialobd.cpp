@@ -96,7 +96,7 @@ void SerialOBD::RequestClusterData()
 void SerialOBD::ParseAndReportClusterData(QByteArray data)
 {
     QByteArray tempData;
-    QByteArray sRPM, sSpeed, sFuelStatus, sEngineCoolantTemp, sTroubleCode, sThrottlePosition, sEngineStartRunTime;
+    QByteArray sRPM, sSpeed, sFuelStatus, sEngineCoolantTemp, sTroubleCode, sThrottlePosition;
     int k = 0;
     QRegExp TCodeRegEx(".*43.*");
     QRegExp dataTemp(".*\\d:\\s\\w\\w\\s\\w\\w\\s\\w\\w\\s\\w\\w\\s\\w\\w.*");
@@ -178,10 +178,10 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
                     for(int j = 0; j < 4; j++)
                         sTroubleCode[j] = data[i + 1], i++;
                 }
-                if(tempData == PID.getEngineStartRunTime())
+                if(tempData == "11B3")
                 {
-                    for(int j = 0; j < 4; j++)
-                        sEngineStartRunTime[j] = data[i + 1], i++;
+                    for(int j = 0; j < 2; j++)
+                        qDebug() << data[i + 1], i++;
                 }
 
                 tempData = "";
