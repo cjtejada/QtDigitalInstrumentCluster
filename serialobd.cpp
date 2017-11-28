@@ -198,8 +198,7 @@ void SerialOBD::EngineOff()
 {
     emit obdRPM(0);
     emit obdCoolantTemp(300);
-    emit obdFuelStatus(-10);
-    emit obdCoolantTemp(0);
+    emit obdFuelStatus(-3);
 }
 ///this function turns the data from
 /// the Parse function into the corresponding value
