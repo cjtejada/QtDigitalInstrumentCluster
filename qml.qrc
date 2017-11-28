@@ -4,9 +4,8 @@
         <file>gauges/MPHGauge.png</file>
         <file>gauges/needle.png</file>
         <file>gauges/RPMGauge.png</file>
-        <file>gauges/tempneedle.png</file>
         <file>gauges/checkengine.png</file>
         <file>gauges/skull.png</file>
-        <file>gauges/spinner.gif</file>
+        <file>gauges/fueltempneedle.png</file>
     </qresource>
 </RCC>

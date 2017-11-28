@@ -17,7 +17,6 @@ class SerialOBD : public QObject
 public:
     void RequestClusterData();
     void ParseAndReportClusterData(QByteArray data);
-    float CalculateMPG(float EngineStartRunTime, int Speed, int fuel);
     void HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp,
                       QByteArray sThrottlePosition, QByteArray sTroubleCode, QByteArray sEngineStartRunTime);
 
@@ -28,7 +27,6 @@ signals:
     void obdFuelStatus(int fuel);
     void obdCoolantTemp(int coolantTemp);
     void obdTroubleCode(QByteArray troublecode);
-    void obdMPG(float mpg);
     void onEngineOff();
 
 public slots:
@@ -42,11 +40,6 @@ private:
     bool ArrayEngineOff[3] = {false};
     int m_tCodeCounter = 0;
     int m_engineOffcount = 0;
-    float m_EngineOnIterations = 0;
-    float m_FuelStatusStart = 0;
-    float m_AvgSpeed = 0;
-    float m_Speed = 0;
-
 };
 
 #endif // SERIALOBD_H

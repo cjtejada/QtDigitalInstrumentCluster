@@ -64,44 +64,26 @@ Window {
                 smooth: true
             }
 
-            Rectangle{
-                id: fuelrect
-                height: 98
-                width: 62
+            Image{
+                id: fuelpneedle
+                property int angle: 90
+                source: "qrc:/gauges/fueltempneedle.png"
+                anchors.verticalCenterOffset: 80
+                anchors.horizontalCenterOffset: 5
                 anchors.centerIn: rpm
-                anchors.verticalCenterOffset: -65
-                anchors.horizontalCenterOffset: -51.3
-                radius: 10
-                gradient: Gradient {
-                    GradientStop { position: 0.3; color: "grey" }
-                    GradientStop { position: 1; color: "darkgrey" }
-                }
+                transform: Rotation { origin.x: 3; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: fuelpneedle.angle;
+                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
+            }
 
-                Rectangle{
-                    id: fuelprogressbar
-                    property int fuelpercentage: 0
-                    radius: 10
-                    anchors.bottom: parent.bottom
-                    color: "lightgreen"
-                    width: parent.width
-                    height: parent.height * (fuelprogressbar.fuelpercentage * .01)
-                    gradient: Gradient {
-                        GradientStop { position: 0.2; color: "lightgreen" }
-                        GradientStop { position: 1; color: "green" }
-                    }
-
-                }
-
-                Text {
-                    id: fuelpercent
-                    anchors.centerIn: fuelrect
-                    anchors.verticalCenterOffset: 10
-                    font.family: "Arial"
-                    text: "--%"
-                    font.pointSize: 15
-                    color: "#0059ff"
-                    font.bold: true
-                }
+            Image{
+                id: tempneedle
+                property int angle: 270
+                source: "qrc:/gauges/fueltempneedle.png"
+                anchors.verticalCenterOffset: 80
+                anchors.horizontalCenterOffset: 5
+                anchors.centerIn: rpm
+                transform: Rotation { origin.x: 3; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
+                    Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
             }
 
             Image{
@@ -109,57 +91,6 @@ Window {
                 source: "qrc:/gauges/RPMGauge.png"
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
-
-                Image{
-                    id: tempneedle
-                    property int angle: 270
-                    height: 120
-                    width: 120
-                    source: "qrc:/gauges/tempneedle.png"
-                    anchors.centerIn: parent
-                    anchors.horizontalCenterOffset: 3
-                    anchors.verticalCenterOffset: 15
-                    transform: Rotation { origin.x: 60; origin.y: 92; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
-                        Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
-                }
-
-                Text{
-                    id: texttemp
-                    anchors.centerIn: tempneedle
-                    anchors.verticalCenterOffset: 32
-                    font.pointSize: 15
-                    color: "#0059ff"
-                    text: "--"
-                    font.family: "Calibri"
-                }
-
-                AnimatedImage{
-                    id: mpg
-                    source: "qrc:/gauges/spinner.gif"
-                    anchors.centerIn: parent
-                    anchors.horizontalCenterOffset: 45
-                    anchors.verticalCenterOffset: -65
-                    height: 116
-                    width: 116
-
-                    Text{
-                        anchors.centerIn: parent
-                        anchors.verticalCenterOffset: -10
-                        font.pointSize: 12
-                        color: "white"
-                        text: "MPG"
-
-                        Text{
-                            id: mpgtext
-                            anchors.centerIn: parent
-                            anchors.verticalCenterOffset: 25
-                            font.pointSize: 15
-                            color: "white"
-                            text: "..."
-                        }
-                    }
-                }
-
             }
         }
 
@@ -247,14 +178,8 @@ Window {
             mphneedle.angle = ((speed - 1) * -1.8) + 36
         }
 
-        onObdFuelStatus: {fuelprogressbar.fuelpercentage = fuel;
-            fuelpercent.text = fuel - 3 + "%"
-        }
-        onObdCoolantTemp: {tempneedle.angle = (coolantTemp * (-9/14)) - 90;
-            texttemp.text = ((coolantTemp - 40) * 1.4 + 32).toFixed(0);
-            if(coolantTemp == -100){
-                tempneedle.angle = 270;texttemp.text = "--"
-            }
+        onObdFuelStatus: {fuelpneedle.angle = ((fuel - 3) * 1.6) + 100}
+        onObdCoolantTemp: {tempneedle.angle = ((coolantTemp * -1) * .57) + 80;
         }
         onObdTroubleCode: {troubleCode.text = troublecode;
             checkengine.visible = true
