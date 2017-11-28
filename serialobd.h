@@ -18,7 +18,7 @@ public:
     void RequestClusterData();
     void ParseAndReportClusterData(QByteArray data);
     void HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp,
-                      QByteArray sThrottlePosition, QByteArray sTroubleCode, QByteArray sEngineStartRunTime);
+                      QByteArray sThrottlePosition, QByteArray sTroubleCode);
 
 
 signals:

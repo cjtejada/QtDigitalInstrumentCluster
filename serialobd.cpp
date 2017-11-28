@@ -190,7 +190,7 @@ void SerialOBD::ParseAndReportClusterData(QByteArray data)
         }
     }
 
-    HexToDecimal(sRPM,sSpeed,sFuelStatus,sEngineCoolantTemp,sThrottlePosition, sTroubleCode, sEngineStartRunTime);
+    HexToDecimal(sRPM,sSpeed,sFuelStatus,sEngineCoolantTemp,sThrottlePosition, sTroubleCode);
 }
 ///this gets emitted when the engine has
 /// not revieved any valid data in 300 milliseconds
@@ -204,15 +204,13 @@ void SerialOBD::EngineOff()
 /// the Parse function into the corresponding value
 /// example: RPM string to an integer
 void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp,
-                             QByteArray sThrottlePosition, QByteArray sTroubleCode, QByteArray sEngineStartRunTime)
+                             QByteArray sThrottlePosition, QByteArray sTroubleCode)
 {
     int RPM = 0;
     int Speed = 0;
     int FuelStatus = 0;
     int EngineCoolantTemp = 0;
     int ThrottlePosition = 0;
-    float EngineStartRunTime = 0;
-    float MPG = 0;
     bool falsebool = false;
     QByteArray TroubleCode;
 
@@ -221,7 +219,6 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
     FuelStatus = QByteArray::fromHex(sFuelStatus).toHex().toUInt(&falsebool,16) * 0.392156;
     EngineCoolantTemp = (QByteArray::fromHex(sECoolantTemp).toHex().toUInt(&falsebool,16));
     ThrottlePosition = QByteArray::fromHex(sThrottlePosition).toHex().toUInt(&falsebool,16) * 0.392156;
-    EngineStartRunTime = QByteArray::fromHex(sEngineStartRunTime).toHex().toUInt(&falsebool,16);
 
     if(RPM == 0)
         ArrayEngineOff[m_engineOffcount] = true;
