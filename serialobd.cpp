@@ -76,7 +76,7 @@ void SerialOBD::RequestClusterData()
                        PID.getSpeed() +
                        PID.getFuelTankLevel() +
                        PID.getEngineCoolantTemp() +
-                       PID.getEngineStartRunTime() +"\r");
+                       "11B3" +"\r");
     }
 
     m_serial.waitForBytesWritten(5000);
