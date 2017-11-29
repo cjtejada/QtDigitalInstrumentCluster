@@ -207,8 +207,8 @@ Window {
             liveMPH.opacity = 1 - (skull.opacity)
         }
 
-        onObdMPH: {liveMPH.text = speed - .9;
-            mphneedle.angle = ((speed - .9) * -1.8) + 36
+        onObdMPH: {liveMPH.text = (speed - .9).toFixed(0);
+            mphneedle.angle = (((speed - .9) * -1.8) + 36).toFixed(0)
         }
 
         onObdFuelStatus: {fuelpneedle.angle = ((fuel - 3) * 1.6) + 100}
