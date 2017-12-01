@@ -54,6 +54,17 @@ Window {
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle;
                     Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}} //324
                 smooth: true
+
+                DropShadow {
+                    anchors.fill: rpmneedle
+                    horizontalOffset: 25
+                    verticalOffset: -3
+                    radius: 8.0
+                    samples: 17
+                    color: "#80000000"
+                    source: rpmneedle
+                    spread: 0
+                }
             }
 
             Image{
@@ -83,6 +94,7 @@ Window {
                 source: "qrc:/gauges/RPMGauge.png"
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
+
                 Text {
                     id: txtgear
                     text: ""
@@ -129,6 +141,17 @@ Window {
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle;
                     Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
                 smooth: true
+
+                DropShadow {
+                    anchors.fill: mphneedle
+                    horizontalOffset: -25
+                    verticalOffset: -3
+                    radius: 8.0
+                    samples: 17
+                    color: "#80000000"
+                    source: mphneedle
+                    spread: 0
+                }
             }
 
             Image{
