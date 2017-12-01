@@ -1,4 +1,4 @@
-import QtQuick 2.7
+import QtQuick 2.0
 import QtQuick.Window 2.2
 import QtGraphicalEffects 1.0
 
@@ -15,35 +15,10 @@ Window {
         id: background
         anchors.fill: parent
         gradient: Gradient {
-            GradientStop { position: .80; color: "transparent" }
-            GradientStop { position: 1; color: "white" }
+            GradientStop { position: .1; color: "white"}
+            GradientStop { position: 1.1; color: "lightgrey" }
         }
 
-        Rectangle{
-            color: mainwin.wincolor
-            height: 400
-            width: 400
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            transform: Rotation { origin.x: 400; origin.y: 400; axis { x: 0; y: 0; z: 1 } angle: 45}
-            gradient: Gradient {
-                GradientStop { position: .5; color: mainwin.wincolor }
-                GradientStop { position: .5; color: "transparent" }
-            }
-        }
-
-        Rectangle{
-            color: mainwin.wincolor
-            height: 400
-            width: 400
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            transform: Rotation { origin.x: 0; origin.y: 400; axis { x: 0; y: 0; z: 1 } angle: -45}
-            gradient: Gradient {
-                GradientStop { position: .5; color: mainwin.wincolor }
-                GradientStop { position: .5; color: "transparent" }
-            }
-        }
         Rectangle{
             id: rpmrect
             color: "transparent"
@@ -61,7 +36,7 @@ Window {
                 anchors.verticalCenterOffset: 1
                 color: mainwin.wincolor
                 radius: 360
-                opacity: .2
+                opacity: .1
                 FastBlur{
                     anchors.fill: parent
                     source: rpm
@@ -108,6 +83,14 @@ Window {
                 source: "qrc:/gauges/RPMGauge.png"
                 anchors.bottom: parent.bottom
                 anchors.left: parent.left
+                Text {
+                    id: txtgear
+                    text: ""
+                    font.pointSize: 70
+                    anchors.centerIn: parent
+                    anchors.horizontalCenterOffset: 5
+                    color: "#0059ff"
+                }
             }
         }
 
@@ -128,7 +111,7 @@ Window {
                 anchors.verticalCenterOffset: 10
                 color: mainwin.wincolor
                 radius: 360
-                opacity: .2
+                opacity: .1
                 FastBlur{
                     anchors.fill: parent
                     source: mph
@@ -172,7 +155,7 @@ Window {
                     anchors.horizontalCenterOffset: 8
                     Text{
                         id: troubleCode
-                        font.pointSize: 13
+                        font.pointSize: 5
                         font.bold: true
                         color: "gold"
                         anchors.centerIn: parent
@@ -193,7 +176,7 @@ Window {
                 ColorOverlay{
                     anchors.fill: parent
                     source: parent
-                    color: "#ffffff"
+                    color: "black"
                 }
             }
 
@@ -217,5 +200,6 @@ Window {
         onObdTroubleCode: {troubleCode.text = troublecode;
             checkengine.visible = true
         }
+        onGear: txtgear.text = gear
     }
 }
