@@ -246,7 +246,7 @@ void SerialOBD::HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFue
         emit obdFuelStatus(FuelStatus);
     if(EngineCoolantTemp > 0)
         emit obdCoolantTemp(EngineCoolantTemp);
-    if(ThrottlePosition > 0)
+    if(TroubleCode != "")
         emit obdTroubleCode(TroubleCode);
 
     //when this array is entirely false, this will set the cluster values to "off" state
