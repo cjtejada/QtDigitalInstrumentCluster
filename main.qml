@@ -162,24 +162,23 @@ Window {
                         anchors.verticalCenterOffset: 2
                     }
                 }
-            }
 
-            Image {
-                id: skull
-                source: "qrc:/gauges/skull.png"
-                anchors.centerIn: parent
-                height: 300
-                width: 300
-                opacity: 0
-                anchors.verticalCenterOffset: 10
-                anchors.horizontalCenterOffset: 10
-                ColorOverlay{
-                    anchors.fill: parent
-                    source: parent
-                    color: "black"
+                Image {
+                    id: skull
+                    source: "qrc:/gauges/skull.png"
+                    anchors.centerIn: parent
+                    height: 300
+                    width: 300
+                    opacity: 0
+                    anchors.verticalCenterOffset: 10
+                    anchors.horizontalCenterOffset: 10
+                    ColorOverlay{
+                        anchors.fill: parent
+                        source: parent
+                        color: "transparent"
+                    }
                 }
             }
-
         }
     }
 
