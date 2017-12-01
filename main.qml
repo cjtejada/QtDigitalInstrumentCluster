@@ -5,6 +5,7 @@ import QtGraphicalEffects 1.0
 Window {
     id:mainwin
     property string wincolor: "black"
+    property string gaugeglow: "white"
     visible: true
     width: 1920
     height: 810
@@ -14,10 +15,7 @@ Window {
     Rectangle{
         id: background
         anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: .1; color: "white"}
-            GradientStop { position: 1.1; color: "lightgrey" }
-        }
+        color: "#a8a8a8"
 
         Rectangle{
             id: rpmrect
@@ -26,6 +24,15 @@ Window {
             width: 550
             anchors.left: parent.left
             anchors.bottom: parent.bottom
+
+            RectangularGlow {
+                id: reffect
+                anchors.fill: rpm
+                glowRadius: 0
+                spread: 0
+                cornerRadius: 500
+                color: mainwin.gaugeglow
+            }
 
             Rectangle{
                 id:rpmblurr
@@ -36,7 +43,7 @@ Window {
                 anchors.verticalCenterOffset: 1
                 color: mainwin.wincolor
                 radius: 360
-                opacity: .1
+                opacity: .05
                 FastBlur{
                     anchors.fill: parent
                     source: rpm
@@ -88,7 +95,6 @@ Window {
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: tempneedle.angle;
                     Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
             }
-
             Image{
                 id: rpm
                 source: "qrc:/gauges/RPMGauge.png"
@@ -111,8 +117,19 @@ Window {
             color: "transparent"
             anchors.right: background.right
             anchors.bottom: background.bottom
-            height: 560
-            width: 600
+            anchors.bottomMargin: 10
+            anchors.rightMargin: 25
+            height: 550
+            width: 550
+
+            RectangularGlow {
+                id: meffect
+                anchors.fill: mphrect
+                glowRadius: 0
+                spread: 0
+                cornerRadius: 360
+                color: mainwin.gaugeglow
+            }
 
             Rectangle{
                 id:mphblurr
@@ -123,7 +140,7 @@ Window {
                 anchors.verticalCenterOffset: 10
                 color: mainwin.wincolor
                 radius: 360
-                opacity: .1
+                opacity: .05
                 FastBlur{
                     anchors.fill: parent
                     source: mph
