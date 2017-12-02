@@ -9,7 +9,7 @@ Window {
     visible: true
     width: 1920
     height: 810
-    onBeforeRendering: Work.start();
+    onAfterRendering: Work.start();
     color: mainwin.wincolor
 
     Rectangle{
