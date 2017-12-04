@@ -61,16 +61,13 @@ Window {
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: rpmneedle.angle;
                     Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}} //324
                 smooth: true
-
-                DropShadow {
-                    anchors.fill: rpmneedle
+                layer.enabled: true
+                layer.effect: DropShadow {
                     horizontalOffset: 25
                     verticalOffset: -3
-                    radius: 8.0
-                    samples: 17
+                    radius: 8
+                    samples: 16
                     color: "#80000000"
-                    source: rpmneedle
-                    spread: 0
                 }
             }
 
@@ -158,16 +155,13 @@ Window {
                 transform: Rotation { origin.x: 5; origin.y: 0; axis { x: 0; y: 0; z: 1 } angle: mphneedle.angle;
                     Behavior on angle { SpringAnimation { spring: 5; damping: 0.4 ; modulus: 360 }}}
                 smooth: true
-
-                DropShadow {
-                    anchors.fill: mphneedle
+                layer.enabled: true
+                layer.effect: DropShadow {
                     horizontalOffset: -25
                     verticalOffset: -3
-                    radius: 8.0
-                    samples: 17
+                    radius: 8
+                    samples: 16
                     color: "#80000000"
-                    source: mphneedle
-                    spread: 0
                 }
             }
 
