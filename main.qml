@@ -239,6 +239,6 @@ Window {
         onObdTroubleCode: {troubleCode.text = troublecode;
             checkengine.visible = true
         }
-        onGear: txtgear.text = gear
+        //onGear: txtgear.text = gear
     }
 }

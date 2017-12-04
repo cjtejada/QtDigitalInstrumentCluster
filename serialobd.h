@@ -17,8 +17,7 @@ class SerialOBD : public QObject
 public:
     void RequestClusterData();
     void ParseAndReportClusterData(QByteArray data);
-    void HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp,
-                      QByteArray sThrottlePosition, QByteArray sTroubleCode);
+    void HexToDecimal(QByteArray sRPM, QByteArray sSpeed, QByteArray sFuelStatus, QByteArray sECoolantTemp, QByteArray sTroubleCode);
 
 
 signals:
