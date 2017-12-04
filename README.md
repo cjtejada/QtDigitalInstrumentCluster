@@ -1,3 +1,4 @@
+![Alt text](/QtDigitalInstrumentCluster/gauges/cluster.png?raw=true "Cluster")
 # QtDigitalInstrumentCluster
 This is a digital instrument cluster project that when paired with an OBD II to USB cable it can display live data from the vehicle's computer (ECU). It can also display information that regular instrument clusters cannot, such as engine trouble codes, calculated engine load, intake air temperature, throtle position and much more.
 
