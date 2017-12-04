@@ -54,6 +54,7 @@ Window {
             Image {
                 id: rpmneedle
                 property double angle: -36
+                property double rshade: 25
                 source: "qrc:/gauges/needle.png"
                 anchors.verticalCenterOffset: 128.75
                 anchors.horizontalCenterOffset: 4
@@ -63,7 +64,8 @@ Window {
                 smooth: true
                 layer.enabled: true
                 layer.effect: DropShadow {
-                    horizontalOffset: 25
+                    id: mphnshadow
+                    horizontalOffset: rpmneedle.rshade
                     verticalOffset: -3
                     radius: 8
                     samples: 16
@@ -148,6 +150,7 @@ Window {
             Image {
                 id: mphneedle
                 property double angle: 36
+                property double mshade: -25
                 anchors.verticalCenterOffset: 137.75
                 anchors.horizontalCenterOffset: 13
                 source: "qrc:/gauges/needle.png"
@@ -157,7 +160,8 @@ Window {
                 smooth: true
                 layer.enabled: true
                 layer.effect: DropShadow {
-                    horizontalOffset: -25
+                    id: mphnshadow
+                    horizontalOffset: mphneedle.mshade
                     verticalOffset: -3
                     radius: 8
                     samples: 16
@@ -224,7 +228,9 @@ Window {
         }
 
         onObdMPH: {liveMPH.text = (speed - .9).toFixed(0);
-            mphneedle.angle = (((speed - .9) * -1.8) + 36).toFixed(0)
+            mphneedle.angle = (((speed - .9) * -1.8) + 36).toFixed(0);
+            mphneedle.mshade = (speed * 0.3571428) - 25;
+            rpmneedle.rshade = -1 * ((speed * 0.3571428) - 25)
         }
 
         onObdFuelStatus: {fuelpneedle.angle = ((fuel - 3) * 1.6) + 100}
