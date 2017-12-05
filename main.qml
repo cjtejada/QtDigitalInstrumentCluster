@@ -4,6 +4,7 @@ import QtGraphicalEffects 1.0
 
 Window {
     id:mainwin
+    property int daytime: 0400
     property string wincolor: "black"
     property string gaugeglow: "white"
     visible: true
@@ -237,8 +238,13 @@ Window {
         onObdCoolantTemp: {tempneedle.angle = ((coolantTemp * -1) * .57) + 80;
         }
         onObdTroubleCode: {troubleCode.text = troublecode;
-            checkengine.visible = true
+            checkengine.visible = true;
+            if(daytime > 400){
+                gaugeglow = "#c0f6f7";
+                background.color = "transparent";
+            }
         }
+
         //onGear: txtgear.text = gear
     }
 }
