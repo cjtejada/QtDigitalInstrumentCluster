@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.0
 
 Window {
     id:mainwin
-    property int daytime: 0400
+    property int daytime: 0401
     property string wincolor: "black"
     property string gaugeglow: "white"
     visible: true
@@ -31,7 +31,7 @@ Window {
                 anchors.fill: rpm
                 glowRadius: 0
                 spread: 0
-                cornerRadius: 500
+                cornerRadius: 360
                 color: mainwin.gaugeglow
             }
 
@@ -65,7 +65,7 @@ Window {
                 smooth: true
                 layer.enabled: true
                 layer.effect: DropShadow {
-                    id: mphnshadow
+                    id: mphrshadow
                     horizontalOffset: rpmneedle.rshade
                     verticalOffset: -3
                     radius: 8
