@@ -1,6 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Window 2.2
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.2
+import QtQuick.Layouts 1.3
 
 Window {
     id:mainwin
@@ -16,7 +18,51 @@ Window {
     Rectangle{
         id: background
         anchors.fill: parent
-        color: "#a8a8a8"
+        color: "black"
+
+        TabBar{
+            id: optiontabs
+            anchors.centerIn: parent
+            anchors.verticalCenterOffset: -200
+            width: 200
+
+            TabButton {
+                width: 100
+                text: "Mustang"
+            }
+            TabButton {
+                width: 100
+                text: "Navigation"
+            }
+        }
+
+        StackLayout {
+            id: stcklayout
+            width: parent.width
+            height: 582
+            currentIndex: optiontabs.currentIndex
+            anchors.bottom : background.bottom
+            Item {
+                id: mustangtab
+                Rectangle{
+                    id: mustangrect
+                    anchors.fill: parent
+                    color: "#a8a8a8"
+                    Mustang{
+
+                    }
+                }
+            }
+            Item {
+                id: navtab
+                Rectangle{
+                    anchors.fill: parent
+                    Navigation{
+
+                    }
+                }
+            }
+        }
 
         Rectangle{
             id: rpmrect
@@ -194,9 +240,9 @@ Window {
                     anchors.horizontalCenterOffset: 8
                     Text{
                         id: troubleCode
-                        font.pointSize: 5
+                        font.pointSize: 13
                         font.bold: true
-                        color: "gold"
+                        color: "blue"
                         anchors.centerIn: parent
                         anchors.verticalCenterOffset: 2
                     }
@@ -240,8 +286,10 @@ Window {
         onObdTroubleCode: {troubleCode.text = troublecode;
             checkengine.visible = true;
             if(daytime > 400){
-                gaugeglow = "#c0f6f7";
-                background.color = "transparent";
+                gaugeglow = "lightgrey";
+                mustangrect.color = "black";
+                background.color = "darkgrey"
+                troubleCode.color = "gold"
             }
         }
 

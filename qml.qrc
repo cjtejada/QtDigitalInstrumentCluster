@@ -7,5 +7,8 @@
         <file>gauges/checkengine.png</file>
         <file>gauges/skull.png</file>
         <file>gauges/fueltempneedle.png</file>
+        <file>Mustang.qml</file>
+        <file>gauges/mustang.png</file>
+        <file>Navigation.qml</file>
     </qresource>
 </RCC>
