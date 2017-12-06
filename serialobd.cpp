@@ -15,7 +15,7 @@ void SerialOBD::ConnectToSerialPort()
 
     availablePorts = serialInfo.availablePorts();
 
-    //Make sure serial connects to the corrent device
+    //Make sure serial connects to the current device
     if(!availablePorts.empty()){
         qDebug() << "1st Port Detected: " << availablePorts.at(0).portName();
         while(availablePorts.at(0).portName() != "ttyUSB0"){
