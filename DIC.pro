@@ -5,7 +5,8 @@ QT += serialport
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    serialobd.cpp
+    serialobd.cpp \
+    serialgps.cpp
 
 RESOURCES += qml.qrc
 
@@ -18,4 +19,5 @@ include(deployment.pri)
 HEADERS += \
     pids.h \
     instrumentcluster.h \
-    serialobd.h
+    serialobd.h \
+    serialgps.h
