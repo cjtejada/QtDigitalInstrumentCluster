@@ -18,7 +18,7 @@ Window {
     Rectangle{
         id: background
         anchors.fill: parent
-        color: "darkgrey"
+        color: "grey"
 
         TabBar{
             id: optiontabs
@@ -48,18 +48,14 @@ Window {
                     id: mustangrect
                     anchors.fill: parent
                     color: "#a8a8a8"
-                    Mustang{
-
-                    }
+                    Mustang{}
                 }
             }
             Item {
                 id: navtab
                 Rectangle{
                     anchors.fill: parent
-                    Navigation{
-
-                    }
+                    Navigation{}
                 }
             }
         }
@@ -292,7 +288,6 @@ Window {
                 troubleCode.color = "gold"
             }
         }
-
         //onGear: txtgear.text = gear
     }
 }

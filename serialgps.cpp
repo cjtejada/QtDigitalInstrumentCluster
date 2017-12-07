@@ -86,7 +86,7 @@ void SerialGPS::GrabGeoLocation(QByteArray data)
     emit GPSLat(Latitude);
     emit GPSLong(Longitude);
 
-    qDebug() << Latitude << Longitude;
+    //qDebug() << Latitude << Longitude;
 }
 
 float SerialGPS::LatDMMtoDD(QString sLat, bool isSouth)

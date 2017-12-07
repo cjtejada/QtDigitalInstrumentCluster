@@ -32,6 +32,9 @@ public:
         connect(OBD,SIGNAL(obdFuelStatus(int)),this,SIGNAL(obdFuelStatus(int)));
         connect(OBD,SIGNAL(obdCoolantTemp(int)),this,SIGNAL(obdCoolantTemp(int)));
         connect(OBD,SIGNAL(obdTroubleCode(QByteArray)),this,SIGNAL(obdTroubleCode(QByteArray)));
+        //connect GPS signals
+        connect(GPS,SIGNAL(GPSLat(float)),this,SIGNAL(gpsLat(float)));
+        connect(GPS,SIGNAL(GPSLong(float)),this,SIGNAL(gpsLong(float)));
 
         ClusterThread->start();
         GpsThread->start();
@@ -49,6 +52,8 @@ signals:
     void obdCoolantTemp(int coolantTemp);
     void obdThrottlePosition(int throttle);
     void obdTroubleCode(QByteArray troublecode);
+    void gpsLat(float Lat);
+    void gpsLong(float Long);
 public slots:
 
 private:

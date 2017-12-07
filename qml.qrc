@@ -10,5 +10,7 @@
         <file>Mustang.qml</file>
         <file>gauges/mustang.png</file>
         <file>Navigation.qml</file>
+        <file>gauges/09mustang.png</file>
+        <file>gauges/navcenter.gif</file>
     </qresource>
 </RCC>
