@@ -46,7 +46,6 @@ Item {
         onGpsLong: {
             console.log(Long);
             dashmap.lon = (Long).toFixed(9);
-            dashmap.pan(310,960)
         }
     }
 }

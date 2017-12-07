@@ -13,6 +13,9 @@ void SerialGPS::ConnectToSerialPort()
     QByteArray data;
     QRegExp geoRegEx(".*GPGLL.*");
 
+    //Start GPS with start location
+    emit GPSLat(44.9778);
+    emit GPSLong(-93.2650);
 
     availablePorts = serialInfo.availablePorts();
 
