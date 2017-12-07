@@ -41,11 +41,12 @@ Item {
         target: Work
         onGpsLat: {
             console.log(Lat);
-            dashmap.lat = (Lat).toFixed(7)
+            dashmap.lat = (Lat).toFixed(9)
         }
         onGpsLong: {
             console.log(Long);
-            dashmap.lon = (Long).toFixed(7)
+            dashmap.lon = (Long).toFixed(9);
+            dashmap.pan(310,960)
         }
     }
 }

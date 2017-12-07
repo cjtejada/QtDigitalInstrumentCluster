@@ -3,6 +3,7 @@
 void SerialOBD::ConnectToSerialPort()
 {
     //ParseAndReportClusterData("OPPED\r\r>10C0D2F0511\rS");//For testing purposes
+    //emit obdTroubleCode("P1256");
 
     //triggers if engine has been turned off
     connect(this,SIGNAL(onEngineOff()),this,SLOT(EngineOff()));

@@ -24,14 +24,18 @@ Window {
             id: optiontabs
             anchors.centerIn: parent
             anchors.verticalCenterOffset: -310
-            width: 200
+            width: 360
 
             TabButton {
-                width: 100
+                width: 120
+                text: "Standard"
+            }
+            TabButton {
+                width: 120
                 text: "Mustang"
             }
             TabButton {
-                width: 100
+                width: 120
                 text: "Navigation"
             }
         }
@@ -42,6 +46,10 @@ Window {
             height: 620
             currentIndex: optiontabs.currentIndex
             anchors.bottom : background.bottom
+            Item{
+                id: standard
+            }
+
             Item {
                 id: mustangtab
                 Rectangle{
