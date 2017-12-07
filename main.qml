@@ -11,19 +11,19 @@ Window {
     property string gaugeglow: "white"
     visible: true
     width: 1920
-    height: 810
+    height: 650
     onAfterRendering: Work.start();
     color: mainwin.wincolor
 
     Rectangle{
         id: background
         anchors.fill: parent
-        color: "black"
+        color: "darkgrey"
 
         TabBar{
             id: optiontabs
             anchors.centerIn: parent
-            anchors.verticalCenterOffset: -200
+            anchors.verticalCenterOffset: -310
             width: 200
 
             TabButton {
@@ -39,7 +39,7 @@ Window {
         StackLayout {
             id: stcklayout
             width: parent.width
-            height: 582
+            height: 620
             currentIndex: optiontabs.currentIndex
             anchors.bottom : background.bottom
             Item {
@@ -90,7 +90,7 @@ Window {
                 anchors.verticalCenterOffset: 1
                 color: mainwin.wincolor
                 radius: 360
-                opacity: .05
+                opacity: .1
                 FastBlur{
                     anchors.fill: parent
                     source: rpm
@@ -186,7 +186,7 @@ Window {
                 anchors.verticalCenterOffset: 10
                 color: mainwin.wincolor
                 radius: 360
-                opacity: .05
+                opacity: .1
                 FastBlur{
                     anchors.fill: parent
                     source: mph
