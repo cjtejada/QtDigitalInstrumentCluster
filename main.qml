@@ -276,6 +276,12 @@ Window {
         onObdRPM: {rpmneedle.angle = rpm * 0.036 - 36;
             skull.opacity = ((rpm * .1) -450) * .01;
             liveMPH.opacity = 1 - (skull.opacity)
+            if(daytime > 400){
+                gaugeglow = "lightgrey";
+                mustangrect.color = "black";
+                background.color = "darkgrey"
+                troubleCode.color = "gold"
+            }
         }
 
         onObdMPH: {liveMPH.text = (speed - .9).toFixed(0);
@@ -289,12 +295,7 @@ Window {
         }
         onObdTroubleCode: {troubleCode.text = troublecode;
             checkengine.visible = true;
-            if(daytime > 400){
-                gaugeglow = "lightgrey";
-                mustangrect.color = "black";
-                background.color = "darkgrey"
-                troubleCode.color = "gold"
-            }
+
         }
         //onGear: txtgear.text = gear
     }

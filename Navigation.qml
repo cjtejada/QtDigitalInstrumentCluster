@@ -20,9 +20,9 @@ Item {
             copyrightsVisible: false
             anchors.fill: parent
             plugin: mapPlugin
-            center: QtPositioning.coordinate(dashmap.lat,dashmap.lon)
+            center: QtPositioning.coordinate(44,-103)
             zoomLevel: 20
-            tilt: 60
+            tilt: 45
             gesture.enabled: true
             //gesture: MapGestureArea{panActive: true}
             AnimatedImage {
@@ -31,21 +31,9 @@ Item {
                 width: 50
                 source: "qrc:/gauges/navcenter.gif"
                 anchors.centerIn: parent
-                transform: Rotation { origin.x: 0; origin.y: 50; axis { x: 1; y: 0; z: 0 } angle: 60;
+                transform: Rotation { origin.x: 0; origin.y: 50; axis { x: 1; y: 0; z: 0 } angle: 45;
                 }
             }
-        }
-    }
-
-    Connections{
-        target: Work
-        onGpsLat: {
-            console.log(Lat);
-            dashmap.lat = (Lat).toFixed(9)
-        }
-        onGpsLong: {
-            console.log(Long);
-            dashmap.lon = (Long).toFixed(9);
         }
     }
 }
