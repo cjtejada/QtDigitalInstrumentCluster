@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 
 Window {
     id:mainwin
-    property int daytime: 0401
+    property int daytime: 0400
     property string wincolor: "black"
     property string gaugeglow: "white"
     visible: true
@@ -47,6 +47,10 @@ Window {
             anchors.bottom : background.bottom
             Item{
                 id: standard
+                Rectangle{
+                    id: stdrect
+                    anchors.fill: parent
+                }
             }
 
             Item {

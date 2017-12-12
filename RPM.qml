@@ -87,6 +87,11 @@ Item {
             source: "qrc:/gauges/RPMGauge.png"
             anchors.bottom: parent.bottom
             anchors.left: parent.left
+            ColorOverlay{
+                id:rpm5k
+                anchors.fill: parent
+                source: parent
+            }
 
             Text {
                 id: txtgear
@@ -104,9 +109,12 @@ Item {
         onObdRPM: {rpmneedle.angle = rpm * 0.036 - 36;
             if(daytime > 400){
                 gaugeglow = "lightgrey";
-                mustangrect.color = "black";
+                mustangrect.color = "darkgrey";
                 background.color = "darkgrey"
+                stdrect.color = "black"
             }
+            if(rpm >= 5500)
+                rpm5k.color = "red";
             rpmneedle.rshade = -1 * ((((rpm * 0.01) * 2) * 0.3571428) - 25)
         }
 
