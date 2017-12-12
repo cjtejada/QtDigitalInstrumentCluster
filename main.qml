@@ -50,6 +50,7 @@ Window {
                 Rectangle{
                     id: stdrect
                     anchors.fill: parent
+                    color: "#cecece"
                 }
             }
 
