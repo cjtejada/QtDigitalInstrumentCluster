@@ -7,4 +7,6 @@ This is a digital instrument cluster project that when paired with an OBD II to 
 This project is developed to run in a Linux environment, however you can also deploy it on Windows but you will not be able to communicate with an OBD serial port (This is only if you would like to see the Digital Cluster design). This only runs in MinGW, but with a few modifications it can run on MSVC.
 # TODO
 Add navigation by connecting a phone and using bluetooth tethering.
+Make USB connection faster and reliable.
+Redo the UI after all the most important TODOs are done.
 
