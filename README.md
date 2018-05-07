@@ -8,5 +8,7 @@ This project is developed to run in a Linux environment, however you can also de
 # TODO
 Add navigation by connecting a phone and using bluetooth tethering.
 Make USB connection faster and reliable.
-Redo the UI after all the most important TODOs are done.
-
+Develop Mobile App to use phone as controller for cluster navigation.
+Deploy Qt Cluster app to raspberry pi.
+Cut boot time as much as possible.
+Redo the UI after all above TODOs are complete.
