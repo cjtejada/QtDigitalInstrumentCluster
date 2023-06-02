@@ -1,0 +1,16 @@
+*.pro.user
+*.pyc
+.directory
+*.o
+*.so
+*.qmlc
+moc_*
+qrc_*
+.qmake.stash
+*.spec.*
+documentation.list
+Makefile
+debug*.list
+CMakeLists.txt.user
+build/
+*.pro.user*
