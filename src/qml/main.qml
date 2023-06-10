@@ -13,6 +13,9 @@ Window {
     height: 650
     onAfterRendering: Work.start();
     color: mainwin.wincolor
+    contentOrientation: Screen.orientation
+    allowedOrientations:  Qt.PortraitOrientation | Qt.LandscapeOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
+
 
     Rectangle{
         id: background
@@ -27,15 +30,15 @@ Window {
 
             TabButton {
                 width: 120
-                text: "Standard"
+                text: qsTr("Standard")
             }
             TabButton {
                 width: 120
-                text: "Mustang"
+                text: qsTr("Mustang")
             }
             TabButton {
                 width: 120
-                text: "Navigation"
+                text: qsTr("Navigation")
             }
         }
 
