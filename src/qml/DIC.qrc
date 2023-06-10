@@ -1,18 +1,18 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>Mustang.qml</file>
+        <file>Navigation.qml</file>
+        <file>RPM.qml</file>
+        <file>MPH.qml</file>
         <file>gauges/MPHGauge.png</file>
         <file>gauges/needle.png</file>
         <file>gauges/RPMGauge.png</file>
         <file>gauges/checkengine.png</file>
         <file>gauges/skull.png</file>
         <file>gauges/fueltempneedle.png</file>
-        <file>Mustang.qml</file>
         <file>gauges/mustang.png</file>
-        <file>Navigation.qml</file>
         <file>gauges/09mustang.png</file>
         <file>gauges/navcenter.gif</file>
-        <file>RPM.qml</file>
-        <file>MPH.qml</file>
     </qresource>
 </RCC>

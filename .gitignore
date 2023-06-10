@@ -12,5 +12,6 @@ documentation.list
 Makefile
 debug*.list
 CMakeLists.txt.user
+CMakeLists.txt.user*
 build/
 *.pro.user*

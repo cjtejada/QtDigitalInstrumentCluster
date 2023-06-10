@@ -1,3 +1,6 @@
+![launcher icon](https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Circle-icons-car.svg/240px-Circle-icons-car.svg.png)
+
+
 ![alt text](https://github.com/cjtejada/QtDigitalInstrumentCluster/blob/master/gauges/day.PNG)
 ![alt text](https://github.com/cjtejada/QtDigitalInstrumentCluster/blob/master/gauges/night.PNG)
 ![alt text](https://github.com/cjtejada/QtDigitalInstrumentCluster/blob/master/gauges/nav.PNG)
@@ -12,3 +15,4 @@ Develop Mobile App to use phone as controller for cluster navigation.
 Deploy Qt Cluster app to raspberry pi.
 Cut boot time as much as possible.
 Redo the UI after all above TODOs are complete.
+
