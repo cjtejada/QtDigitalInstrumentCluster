@@ -13,8 +13,6 @@ Window {
     height: 650
     onAfterRendering: Work.start();
     color: mainwin.wincolor
-    contentOrientation: Screen.orientation
-    allowedOrientations:  Qt.PortraitOrientation | Qt.LandscapeOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
 
 
     Rectangle{
