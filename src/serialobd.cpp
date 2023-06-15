@@ -26,7 +26,7 @@ void SerialOBD::ConnectToSerialPort()
 
     //Make sure serial connects to the current device
     if(!availablePorts.empty()){
-        qDebug() << "1st Port Detected: " << availablePorts.at(1).portName();
+//        qDebug() << "1st Port Detected: " << availablePorts.at(1).portName();
         for (const QSerialPortInfo& port : availablePorts) {
             qDebug() << "Port: " << port.portName();
             qDebug() << "Description: " << port.description();
