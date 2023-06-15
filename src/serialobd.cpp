@@ -18,7 +18,7 @@ void SerialOBD::ConnectToSerialPort()
     QByteArray data;
     QRegularExpression regExOk(".*OK.*", QRegularExpression::CaseInsensitiveOption);
 
-    QRegularExpression portDescriptionRegex("^ODB", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpression portDescriptionRegex("^OBD", QRegularExpression::CaseInsensitiveOption);
     availablePorts = serialInfo.availablePorts();
     
     bool found = false;
@@ -26,16 +26,22 @@ void SerialOBD::ConnectToSerialPort()
 
     //Make sure serial connects to the current device
     if(!availablePorts.empty()){
-//        qDebug() << "1st Port Detected: " << availablePorts.at(1).portName();
         for (const QSerialPortInfo& port : availablePorts) {
-            qDebug() << "Port: " << port.portName();
-            qDebug() << "Description: " << port.description();
-            qDebug() << "Manufacturer: " << port.manufacturer();
-            qDebug() << "System Location: " << port.systemLocation();
-            qDebug() << "Vendor Identifier: " << port.vendorIdentifier();
-            qDebug() << "Product Identifier: " << port.productIdentifier();
-            qDebug() << "Busy: " << (port.isBusy() ? "Yes" : "No");
-            qDebug() << "=====================================";
+            qDebug() << "\n"
+                 << "Port:" << port.portName() << "\n"
+                 << "Location:" << port.systemLocation() << "\n"
+                 << "Description:" << port.description() << "\n"
+                 << "Manufacturer:" << port.manufacturer() << "\n"
+                 << "Serial number:" << port.serialNumber() << "\n"
+                 << "Vendor Identifier:"
+                 << (port.hasVendorIdentifier()
+                     ? QByteArray::number(port.vendorIdentifier(), 16)
+                     : QByteArray()) << "\n"
+                 << "Product Identifier:"
+                 << (port.hasProductIdentifier()
+                     ? QByteArray::number(port.productIdentifier(), 16)
+                     : QByteArray());
+
             QString desc = port.description();
             if (port.portName() == "rfcomm0") {
                 foundrfcomm = true;
