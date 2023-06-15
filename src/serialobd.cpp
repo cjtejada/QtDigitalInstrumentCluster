@@ -1,3 +1,5 @@
+#include <QRegularExpression>
+
 #include "serialobd.h"
 
 void SerialOBD::ConnectToSerialPort()
@@ -14,21 +16,47 @@ void SerialOBD::ConnectToSerialPort()
     QList <QSerialPortInfo> availablePorts;
 
     QByteArray data;
-    QRegExp regExOk(".*OK.*");
+    QRegularExpression regExOk(".*OK.*", QRegularExpression::CaseInsensitiveOption);
 
+    QRegularExpression portDescriptionRegex("^ODB", QRegularExpression::CaseInsensitiveOption);
     availablePorts = serialInfo.availablePorts();
+    
+    bool found = false;
+    bool foundrfcomm = false;
 
     //Make sure serial connects to the current device
     if(!availablePorts.empty()){
-        qDebug() << "1st Port Detected: " << availablePorts.at(0).portName();
-        while(availablePorts.at(0).portName() != "ttyUSB0"){
-            qDebug() << availablePorts.at(0).portName();
-            QThread::msleep(500);
+        qDebug() << "1st Port Detected: " << availablePorts.at(1).portName();
+        for (const QSerialPortInfo& port : availablePorts) {
+            qDebug() << "Port: " << port.portName();
+            qDebug() << "Description: " << port.description();
+            qDebug() << "Manufacturer: " << port.manufacturer();
+            qDebug() << "System Location: " << port.systemLocation();
+            qDebug() << "Vendor Identifier: " << port.vendorIdentifier();
+            qDebug() << "Product Identifier: " << port.productIdentifier();
+            qDebug() << "Busy: " << (port.isBusy() ? "Yes" : "No");
+            qDebug() << "=====================================";
+            QString desc = port.description();
+            if (port.portName() == "rfcomm0") {
+                foundrfcomm = true;
+            }
+            if (portDescriptionRegex.match(desc).hasMatch()) {
+                found = true;
+                qDebug() << "Selecting port " << port.portName();
+                m_serial.setPortName(port.portName());
+                break;
+            }
         }
-        m_serial.setPortName("ttyUSB0");
     }
-    else
-        qDebug() << "EMPTY PORT LIST...";//make sure the ports list is not empty
+    if (!found) {
+        qWarning() << "didn't found serial port with OBD description";
+        if (foundrfcomm) {
+            m_serial.setPortName("rfcomm0");
+            qDebug() << "trying rfcomm0";
+        } else {
+            return;
+        }
+    }
 
     //Set all the port settings
     m_serial.setBaudRate(QSerialPort::Baud38400);
@@ -43,23 +71,26 @@ void SerialOBD::ConnectToSerialPort()
         while(data.isEmpty()){
 
             //Verify OBD Connection, then continue to verify OBD serial port data
-            if(data.isEmpty())
+            if(data.isEmpty()) {
                 m_serial.write("ATE1\r");
+            }
             m_serial.waitForBytesWritten(5000);
             m_serial.waitForReadyRead(5000);
             QThread::msleep(50);
             data = m_serial.readAll();
-            if(regExOk.exactMatch(data)){
-                while(!data.isEmpty())
+            QRegularExpressionMatch match = regExOk.match(data);
+            if (match.hasMatch()){
+                while(!data.isEmpty()) {
                     RequestClusterData();
-            }
-            else
+                }
+            } else {
                 data = "";
+            }
         }
         qDebug() << "ERROR: UNEXPECTED EXIT...";
-    }
-    else
+    } else {
         qDebug() << "ERROR: UNABLE TO OPEN PORT.";
+    }
 }
 ///this function gets OBD data from ECU by
 ///requesting the data with PIDs
