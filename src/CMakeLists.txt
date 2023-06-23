@@ -2,8 +2,6 @@ set(SRC
     instrumentcluster.h
     main.cpp
     pids.h
-    serialgps.cpp
-    serialgps.h
     serialobd.cpp
     serialobd.h
 )
@@ -18,6 +16,7 @@ target_link_libraries(DIC
 	Qt5::Qml
 	Qt5::Quick
 	Qt5::SerialPort
+	Qt5::Positioning
 )
 
 install(TARGETS DIC RUNTIME
