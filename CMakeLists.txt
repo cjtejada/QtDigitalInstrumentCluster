@@ -14,7 +14,7 @@ include(FeatureSummary)
 include(GNUInstallDirs)
 
 set(QT_MIN_VERSION "5.11.0")
-find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Gui Qml Quick SerialPort LinguistTools REQUIRED)
+find_package(Qt5 ${QT_MIN_VERSION} COMPONENTS Gui Qml Quick SerialPort Positioning LinguistTools REQUIRED)
 find_package(Qt5QuickCompiler)
 
 add_subdirectory(src)
