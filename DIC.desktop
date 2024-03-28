@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Icon=/usr/share/DIC/icons/car.png
+Exec=/usr/bin/DIC
+Name=DIC

@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QSerialPort>
 #include "serialobd.h"
-#include "serialgps.h"
 
 class InstrumentCluster : public QObject
 {
@@ -15,16 +14,12 @@ public:
     ///that way there's no blocking operations
     InstrumentCluster(){
         OBD = new SerialOBD;
-        GPS = new SerialGPS;
 
         ClusterThread = new QThread;
-        GpsThread = new QThread;
 
-        GPS->moveToThread(GpsThread);
         OBD->moveToThread(ClusterThread);
 
         connect(this,SIGNAL(start()),OBD,SLOT(ConnectToSerialPort()));
-        connect(this,SIGNAL(start()),GPS,SLOT(ConnectToSerialPort()));
 
         //connect signals in OBD object to this object, to report to QML
         connect(OBD,SIGNAL(obdRPM(int)),this,SIGNAL(obdRPM(int)));
@@ -34,11 +29,13 @@ public:
         connect(OBD,SIGNAL(obdTroubleCode(QByteArray)),this,SIGNAL(obdTroubleCode(QByteArray)));
 
         ClusterThread->start();
-        GpsThread->start();
     }
 
     ~InstrumentCluster(){
         ClusterThread->quit();
+        ClusterThread->wait();
+        delete OBD;
+        delete ClusterThread;
     }
 
 signals:
@@ -49,15 +46,11 @@ signals:
     void obdCoolantTemp(int coolantTemp);
     void obdThrottlePosition(int throttle);
     void obdTroubleCode(QByteArray troublecode);
-    void gpsLat(float Lat);
-    void gpsLong(float Long);
 public slots:
 
 private:
-    SerialGPS* GPS;
     SerialOBD* OBD;
     QThread* ClusterThread;
-    QThread* GpsThread;
 
 };
 
